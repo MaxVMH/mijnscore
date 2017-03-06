@@ -5,13 +5,13 @@ class matches_admin extends Controller
 
   public function __construct()
   {
+		$this->db_con = $this->db_con();
+		
     $this->user = $this->model('User');
     $this->team = $this->model('Team');
     $this->teams_leagues = $this->model('Teams_Leagues');
     $this->match = $this->model('Match');
     $this->league = $this->model('League');
-
-    $this->db_con = $this->db_con();
 
     $this->user_loggedin = $this->user->get_user_loggedin($this->db_con);
     $this->view_data = [];

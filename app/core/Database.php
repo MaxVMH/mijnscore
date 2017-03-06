@@ -1,5 +1,5 @@
 <?php
-// this class is the database connection
+// this class is the database connection, the DB_HOST, DB_NAME, DB_USER, DB_PASS parameters are in app/init.php
 class Database
 {
 	public $db_con = false;
@@ -8,7 +8,6 @@ class Database
 	{
 		try
 		{
-			// the DB_HOST, DB_NAME, DB_USER, DB_PASS parameters are in app/init.php
 			$this->db_con = new PDO('mysql:host='. DB_HOST .';dbname=' . DB_NAME .';charset=utf8', DB_USER, DB_PASS);
 		}
 		catch (PDOException $e)

@@ -27,8 +27,8 @@ class Controller
 		return $this->db_con;
 	}
 
+	// this mainly checks the data types in user input
 	// this can have a better place in the code but for now it's ok here
-	// this mainly checks the data types in any user input
 	public function validate_input($variable, $value)
 	{
 		$result = false;
@@ -70,8 +70,8 @@ class Controller
 		return $result;
 	}
 
-	// this can have a better place in the code but for now it's ok here
 	// this is to clean up all data before it goes to the views, as to avoid html injection
+	// this can have a better place in the code but for now it's ok here
 	public function clean_output(&$data)
 	{
 		if(!is_array($data))

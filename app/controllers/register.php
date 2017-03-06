@@ -5,9 +5,9 @@
 
     public function __construct()
     {
-      $this->user = $this->model('User');
+			$this->db_con = $this->db_con();
 
-      $this->db_con = $this->db_con();
+      $this->user = $this->model('User');
 
       $this->view_data = [];
     }

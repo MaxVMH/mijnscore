@@ -5,10 +5,11 @@ class login extends Controller
 
   public function __construct()
   {
+	  $this->db_con = $this->db_con();
+		
     $this->user = $this->model('User');
     $this->league = $this->model('League');
 
-    $this->db_con = $this->db_con();
     $this->view_data = [];
 		$this->view_data['leagues_current'] = $this->league->get_leagues_by_status($this->db_con, 1);
   }

@@ -6,11 +6,11 @@
 
     public function __construct()
     {
+			$this->db_con = $this->db_con();
+
       $this->user = $this->model('User');
       $this->league = $this->model('League');
       $this->message = $this->model('Message');
-
-      $this->db_con = $this->db_con();
 
       $this->user_loggedin = $this->user->get_user_loggedin($this->db_con);
       $this->view_data = [];

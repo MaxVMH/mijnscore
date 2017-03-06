@@ -5,12 +5,12 @@ class admin extends Controller
 
 	public function __construct()
 	{
+		$this->db_con = $this->db_con();
+		
 		$this->user = $this->model('User');
 		$this->league = $this->model('League');
 		$this->team_points = $this->model('Team_Points');
 		$this->prediction_points = $this->model('Prediction_Points');
-
-		$this->db_con = $this->db_con();
 
 		$this->user_loggedin = $this->user->get_user_loggedin($this->db_con);
 
