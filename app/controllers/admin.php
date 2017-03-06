@@ -1,4 +1,6 @@
 <?php
+// the admin controllers are sections of the website that should only be accessible by the administrator
+// it can calculate rankings/points and has a menu (admin/index) with links to the other admin controllers (leagues_admin, teams_admin, matches_admin)
 class admin extends Controller
 {
 	protected $user;
@@ -6,7 +8,7 @@ class admin extends Controller
 	public function __construct()
 	{
 		$this->db_con = $this->db_con();
-		
+
 		$this->user = $this->model('User');
 		$this->league = $this->model('League');
 		$this->team_points = $this->model('Team_Points');

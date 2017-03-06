@@ -1,4 +1,5 @@
 <?php
+// TODO needs a bit more info
 class teams extends Controller
 {
 	protected $user;
@@ -6,7 +7,7 @@ class teams extends Controller
 	public function __construct()
 	{
 		$this->db_con = $this->db_con();
-		
+
 		$this->user = $this->model('User');
 		$this->league = $this->model('League');
 		$this->team = $this->model('Team');

@@ -1,4 +1,5 @@
 <?php
+// this is the controller everyone uses to input and edit predictions (duh)
 class predictions extends Controller
 {
 	protected $user;

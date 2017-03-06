@@ -1,4 +1,5 @@
 <?php
+// the admin controllers are sections of the website that should only be accessible by the administrator
 class matches_admin extends Controller
 {
   protected $user;
@@ -6,7 +7,7 @@ class matches_admin extends Controller
   public function __construct()
   {
 		$this->db_con = $this->db_con();
-		
+
     $this->user = $this->model('User');
     $this->team = $this->model('Team');
     $this->teams_leagues = $this->model('Teams_Leagues');

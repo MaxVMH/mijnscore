@@ -1,4 +1,6 @@
 <?php
+// the login controller, logs people in or shows a form to try again
+// TODO? logout method could be merged with the login controller (to have a log in/out controller), or the login controller merged into the home controller
 class login extends Controller
 {
   protected $user;
@@ -6,7 +8,7 @@ class login extends Controller
   public function __construct()
   {
 	  $this->db_con = $this->db_con();
-		
+
     $this->user = $this->model('User');
     $this->league = $this->model('League');
 

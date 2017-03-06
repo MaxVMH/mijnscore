@@ -1,4 +1,7 @@
 <?php
+// the matches controller exists of 2 methods:
+// index is the (default) method to view multiple matches
+// single is method to view a single match
 class matches extends Controller
 {
 	protected $user;
@@ -6,7 +9,7 @@ class matches extends Controller
 	public function __construct()
 	{
 		$this->db_con = $this->db_con();
-		
+
 		$this->user = $this->model('User');
 		$this->league = $this->model('League');
 		$this->match = $this->model('Match');
