@@ -1,11 +1,12 @@
 <?php
-// this is the initiation file for the web app
+// initiation file for the web app
+// includes core files and contains various settings
 
 // error settings
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
-// cookie settings
+// cookie stuff (settings)
 session_start();
 
 // language settings

@@ -1,6 +1,6 @@
 <?php
 // this hardly needs any explanation.
-// TODO? merg register controller with home cotnroller?
+// TODO? merg register controller with home controller?
 class register extends Controller
 {
 	protected $user;

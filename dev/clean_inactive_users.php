@@ -1,4 +1,6 @@
 <?php
+// this file was a first attempt at deleting inactive users
+// TODO: needs to be reworked into a user_admin controller
 require_once '../app/init.php';
 
 $database = new Database;
