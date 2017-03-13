@@ -41,7 +41,7 @@ $query_messages="CREATE TABLE `messages` (
 
 $query_leagues="CREATE TABLE `leagues` (
   `league_id` INT(3) NOT NULL AUTO_INCREMENT,
-  `parent_league_id` INT(3),
+  `league_parent_id` INT(3),
   `league_tag` VARCHAR(17) COLLATE utf8_unicode_ci NOT NULL,
   `league_name` VARCHAR(64) COLLATE utf8_unicode_ci NOT NULL,
   `league_playday_current` INT(3) NOT NULL DEFAULT 0,
