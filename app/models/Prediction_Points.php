@@ -67,13 +67,6 @@ class Prediction_Points
 
 			foreach($matches as $match)
 			{
-				if($match['match_status'] < 4)
-				{
-					$query = $db_con->prepare('UPDATE matches SET match_status=3 WHERE match_id=:match_id AND match_status=4');
-					$query->bindValue(':match_id', $match['match_id'], PDO::PARAM_STR);
-					$query->execute();
-				}
-
 				$query = $db_con->prepare('SELECT * FROM predictions WHERE match_id=:match_id ORDER BY user_id');
 				$query->bindValue(':match_id', $match['match_id'], PDO::PARAM_STR);
 				$query->execute();
