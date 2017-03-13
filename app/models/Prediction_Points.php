@@ -55,9 +55,6 @@ class Prediction_Points
 	}
 
 	// this method will eventually replace set_prediction_points_by_league_id
-	// the new method should only calculate new data
-	// the old method calculates every piece of data every time again, can be reworked in a "total recalculate" function
-	// ATTENTION: when a mijnscore admin calculates a match, he is able to edit the date to a future date
 	// this function has not been completed yet
 
 	public function set_prediction_points_by_league_id_new($db_con, $league_id)
