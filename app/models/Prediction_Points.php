@@ -54,6 +54,26 @@ class Prediction_Points
 		return $result;
 	}
 
+	// this method will eventually replace set_prediction_points_by_league_id
+	// the new method should only calculate new data
+	// the old method calculates every piece of data every time again, can be reworked in a "total recalculate" function
+	// ATTENTION: when a mijnscore admin calculates a match, he is able to edit the date to a future date
+	// this function has not been completed yet
+
+	public function set_prediction_points_by_league_id_new($db_con, $league_id)
+	{
+		$result = false;
+		$query = $db_con->prepare('SELECT * FROM matches WHERE league_id=:league_id AND match_status=4 ORDER BY league_playday');
+		$query->bindValue(':league_id', $league_id, PDO::PARAM_STR);
+		$query->execute();
+		$matches = $query->fetchAll();
+
+		foreach($matches as $match)
+		{
+			//
+		}
+	}
+
 	public function set_prediction_points_by_league_id($db_con, $league_id)
 	{
 		$result = false;
