@@ -95,6 +95,20 @@ class Prediction_Points
 	// this method selects matches and predictions, calculates playday totals and updates the database
 	public function set_playday_prediction_points_by_league_id($db_con, $league_id)
 	{
+		// if the league has a parent league, we have to add half of the points of the parent league
+		$query = $db_con->prepare('SELECT * FROM leagues WHERE league_id=:league_id');
+		$query->bindValue(':league_id', $league_id, PDO::PARAM_STR);
+		$query->execute();
+		$league = $query->fetch();
+
+		if($league['league_parent_id'] != null)
+		{
+			$query = $db_con->prepare('SELECT * FROM leagues WHERE league_id=:league_id');
+			$query->bindValue(':league_id', $league['league_parent_id'], PDO::PARAM_STR);
+			$query->execute();
+			$parent_league = $query->fetch();
+		}
+
 		// select the matches that have been calculated
 		$query = $db_con->prepare('SELECT * FROM matches WHERE league_id=:league_id AND match_status=3 ORDER BY league_playday');
 		$query->bindValue(':league_id', $league_id, PDO::PARAM_STR);
@@ -131,6 +145,18 @@ class Prediction_Points
 		{
 			foreach($points_playdays as $league_playday => $points_amount)
 			{
+				$parent_league_points_amount = 0;
+
+				if(!empty($parent_league))
+				{
+					$query = $db_con->prepare('SELECT * FROM predictions_points WHERE user_id=:user_id AND league_id=:league_id AND league_playday=0');
+					$query->bindValue(':user_id', $user_id, PDO::PARAM_STR);
+					$query->bindValue(':league_id', $parent_league['league_id'], PDO::PARAM_STR);
+					$query->execute();
+					$parent_league_prediction_points = $query->fetch();
+					$parent_league_points_amount = $parent_league_prediction_points['points_amount'] / 2;
+				}
+				$points_corrected_amount = $points_amount + ($parent_league_points_amount);
 
 				$query = $db_con->prepare('SELECT * FROM predictions_points WHERE user_id=:user_id AND league_id=:league_id AND league_playday=:league_playday');
 				$query->bindValue(':user_id', $user_id, PDO::PARAM_STR);
@@ -140,11 +166,11 @@ class Prediction_Points
 
 				if($points = $query->fetch())
 				{
-					if($points['points_amount'] != $points_amount)
+					if($points['points_amount'] != $points_corrected_amount)
 					{
 						$query = $db_con->prepare('UPDATE predictions_points SET points_amount=:points_amount WHERE points_id=:points_id');
 						$query->bindValue(':points_id', $points['points_id'], PDO::PARAM_STR);
-						$query->bindValue(':points_amount', $points_amount, PDO::PARAM_STR);
+						$query->bindValue(':points_amount', $points_corrected_amount, PDO::PARAM_STR);
 						$query->execute();
 					}
 				}
@@ -154,7 +180,7 @@ class Prediction_Points
 					$query->bindValue(':league_id', $league_id, PDO::PARAM_STR);
 					$query->bindValue(':league_playday', $league_playday, PDO::PARAM_STR);
 					$query->bindValue(':user_id', $user_id, PDO::PARAM_STR);
-					$query->bindValue(':points_amount', $points_amount, PDO::PARAM_STR);
+					$query->bindValue(':points_amount', $points_corrected_amount, PDO::PARAM_STR);
 					$query->execute();
 				}
 			}
@@ -214,8 +240,8 @@ class Prediction_Points
 			$ranking_share = 0;
 		}
 
-		// for the season total amount of points, we calculate the ranking a little different.
-		// In case of the same amount of points, the person with highest amount of correct predictions gets the highest place
+		// for the season total amount of points, we calculate the ranking a little different
+		// in case of the same amount of points, the person with highest amount of correct predictions gets the highest place
 		$query = $db_con->prepare('SELECT *, (
 			SELECT COUNT(*) FROM predictions p
 			INNER JOIN matches m
