@@ -108,14 +108,13 @@ class teams_admin extends Controller
 			{
 				foreach($_POST['league_id'] as $league_id)
 				{
-					echo "add " . $league_id . "<br />";
 					$this->teams_leagues->set_team_league($this->db_con, $team_id, $league_id);
 				}
+				
 				if(!empty($_POST['remove_league_id']))
 				{
 					foreach($_POST['remove_league_id'] as $league_id)
 					{
-						echo "remove " . $league_id . "<br />";
 						$this->teams_leagues->unset_team_league($this->db_con, $team_id, $league_id);
 					}
 				}
