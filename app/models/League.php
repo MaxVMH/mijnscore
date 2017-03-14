@@ -1,19 +1,21 @@
 <?php
 class League
 {
-	public function create_league($db_con, $name, $tag, $playday_total)
+	public function create_league($db_con, $parent_id, $name, $tag, $playday_total)
 	{
-		$query = $db_con->prepare('INSERT INTO leagues(league_name, league_tag, league_status, league_playday_total) VALUES(:name, :tag, 0, :playday_total)');
+		$query = $db_con->prepare('INSERT INTO leagues(league_parent_id, league_name, league_tag, league_status, league_playday_total) VALUES(:parent_id, :name, :tag, 0, :playday_total)');
+		$query->bindValue(':parent_id', $parent_id, PDO::PARAM_STR);
 		$query->bindValue(':name', $name, PDO::PARAM_STR);
 		$query->bindValue(':tag', $tag, PDO::PARAM_STR);
 		$query->bindValue(':playday_total', $playday_total, PDO::PARAM_STR);
 		return $query->execute();
 	}
 
-	public function edit_league($db_con, $id, $name, $tag, $playday_current, $playday_total, $league_status)
+	public function edit_league($db_con, $id, $parent_id, $name, $tag, $playday_current, $playday_total, $league_status)
 	{
-		$query = $db_con->prepare('UPDATE leagues SET league_name=:name, league_tag=:tag, league_playday_current=:playday_current, league_playday_total=:playday_total, league_status=:league_status WHERE league_id=:id');
+		$query = $db_con->prepare('UPDATE leagues SET league_parent_id=:parent_id, league_name=:name, league_tag=:tag, league_playday_current=:playday_current, league_playday_total=:playday_total, league_status=:league_status WHERE league_id=:id');
 		$query->bindValue(':id', $id, PDO::PARAM_STR);
+		$query->bindValue(':parent_id', $parent_id, PDO::PARAM_STR);
 		$query->bindValue(':name', $name, PDO::PARAM_STR);
 		$query->bindValue(':tag', $tag, PDO::PARAM_STR);
 		$query->bindValue(':playday_current', $playday_current, PDO::PARAM_STR);

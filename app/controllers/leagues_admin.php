@@ -26,6 +26,7 @@ class leagues_admin extends Controller
 		}
 		elseif($league = $this->league->get_league_by_id($this->db_con, $league_id))
 		{
+			$this->view_data['leagues'] = $this->league->get_leagues_all($this->db_con);
 			$this->view_data['league'] = $league;
 
 			if(isset($_POST['edit']))
@@ -50,7 +51,12 @@ class leagues_admin extends Controller
 					$this->view_data['notice'] = "Geen status gevonden.";
 					$this->view('leagues/forms/edit', $this->view_data);
 				}
-				elseif($this->league->edit_league($this->db_con, $league_id, $_POST['name'], $_POST['tag'], $_POST['playday_current'], $_POST['playday_total'], $_POST['league_status']))
+				elseif(empty($_POST['parent_id']))
+				{
+					$this->view_data['notice'] = "Vul een competitie verband in.";
+					$this->view('leagues/forms/edit', $this->view_data);
+				}
+				elseif($this->league->edit_league($this->db_con, $league_id, $_POST['parent_id'], $_POST['name'], $_POST['tag'], $_POST['playday_current'], $_POST['playday_total'], $_POST['league_status']))
 				{
 					$this->view_data['league'] = $this->league->get_league_by_id($this->db_con, $league_id);
 					$this->view_data['notice'] = "Competitie bijgewerkt.";
@@ -84,6 +90,7 @@ class leagues_admin extends Controller
 		}
 		elseif(isset($_POST['create']))
 		{
+			$this->view_data['leagues'] = $this->league->get_leagues_all($this->db_con);
 			if(empty($_POST['name']))
 			{
 				$this->view_data['notice'] = "Vul een competitie naam in.";
@@ -99,7 +106,12 @@ class leagues_admin extends Controller
 				$this->view_data['notice'] = "Vul het totaal aantal speeldagen in.";
 				$this->view('leagues/forms/create', $this->view_data);
 			}
-			elseif($this->league->create_league($this->db_con, $_POST['name'], $_POST['tag'], $_POST['playday_total']))
+			elseif(empty($_POST['parent_id']))
+			{
+				$this->view_data['notice'] = "Vul een competitie verband in.";
+				$this->view('leagues/forms/create', $this->view_data);
+			}
+			elseif($this->league->create_league($this->db_con, $_POST['parent_id'], $_POST['name'], $_POST['tag'], $_POST['playday_total']))
 			{
 				$this->view_data['notice'] = "Nieuwe competitie gemaakt.";
 				$this->view('home/index', $this->view_data);
@@ -112,6 +124,7 @@ class leagues_admin extends Controller
 		}
 		else
 		{
+			$this->view_data['leagues'] = $this->league->get_leagues_all($this->db_con);
 			$this->view('leagues/forms/create', $this->view_data);
 		}
 	}
