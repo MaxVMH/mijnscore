@@ -11,7 +11,7 @@ Op mijnscore.be kan je je pronostiek invullen voor wedstrijden van het Belgische
 Hoe meer punten je verzamelt, hoe hoger je eindigt in het eindklassement.<br />
 <br />
 <h3>Hoe kan ik een fout melden of verbetering voorstellen?</h3>
-Door een <a href="messages_create/form/0/1">berichtje te sturen in het spel</a> of een <a href="http://www.9lives.be/forum/webdesign-webdevelopment/1050659-voetbalpronostiek.html">berichtje achter te laten in de 9lives-discussie</a>.<br />
+Door een <a href="https://github.com/MaxVMH/mijnscore/">issue te openen op github</a>, een <a href="messages_create/form/0/1">berichtje te sturen in het spel</a> of een berichtje achter te laten in <a href="http://www.9lives.be/forum/webdesign-webdevelopment/1050659-voetbalpronostiek.html">deze thread</a> of in de prono- en nabesprekingthreads.<br />
 <br />
 
 <hr />
