@@ -22,7 +22,7 @@ An unfinished soccer prediction web app written in PHP & HTML.
 
 -Remove /dev/ and all of its content
 
--Access your database with something like phpmyadmin, go to the users table, and edit the user_rank field to '9' (instead of '1') for your account (that gives you admin rights).
+-Access your database with something like phpmyadmin, go to the users table, and edit the user_rank field to '9' (instead of '1') for your account (that gives you admin rights)
 
 # Getting started
 
