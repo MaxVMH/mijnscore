@@ -10,6 +10,7 @@ class users extends Controller
 		$this->db_con = $this->db_con();
 
 		$this->user = $this->model('User');
+		$this->mail = $this->model('Mail');
 		$this->league = $this->model('League');
 		$this->prediction_points = $this->model('Prediction_Points');
 
@@ -88,10 +89,16 @@ class users extends Controller
 					$this->view_data['notice'] = "Vul een geldig e-mailadres in.";
 					$this->view('users/forms/email', $this->view_data);
 				}
+				elseif($this->user->get_user_by_email($this->db_con, $_POST['email']) != false)
+				{
+					$this->view_data['notice'] = "Dit e-mail adres is al in gebruik.";
+					$this->view('users/forms/email', $this->view_data);
+				}
 				elseif($this->user->set_user_email($this->db_con, $this->user_loggedin['user_id'], $_POST['email']))
 				{
-
-					$this->view_data['notice'] = "Uw e-mailadres is bijgewerkt.";
+					$this->user->set_user_email_verification_hash($this->db_con, $this->user_loggedin['user_id'], 0);
+					$this->user->set_user_email_verification($this->db_con, $this->user_loggedin['user_id'], 0);
+					$this->view_data['notice'] = "Uw e-mailadres werd bijgewerkt. Vergeet niet uw nieuw e-mailadres the bevestigen.";
 					$this->view_data['user_loggedin'] = $this->user->get_user_loggedin($this->db_con);
 					$this->view('users/forms/email', $this->view_data);
 				}
@@ -160,6 +167,72 @@ class users extends Controller
 		}
 		else
 		{
+			$this->view('home/index', $this->view_data);
+		}
+	}
+
+	public function email_notification($email_notification='0')
+	{
+		if($this->user_loggedin == false)
+		{
+			$this->view_data['notice'] = "U bent niet ingelogd.";
+			$this->view('home/index', $this->view_data);
+		}
+		if($email_notification == 0)
+		{
+			$this->user->set_user_email_notification($this->db_con, $this->user_loggedin['user_id'], $email_notification);
+			$this->view_data['notice'] = "E-mail herinneringen worden uitgeschakeld.";
+			$this->view('home/index', $this->view_data);
+		}
+		elseif($email_notification == 1)
+		{
+			$this->user->set_user_email_notification($this->db_con, $this->user_loggedin['user_id'], $email_notification);
+			$this->view_data['notice'] = "E-mail herinneringen worden ingeschakeld.";
+			$this->view('home/index', $this->view_data);
+		}
+		else
+		{
+			$this->view('home/index', $this->view_data);
+		}
+	}
+
+	public function email_verification($email_hash='')
+	{
+		if($this->user_loggedin == false)
+		{
+			$this->view_data['notice'] = "U bent niet ingelogd.";
+			$this->view('home/index', $this->view_data);
+		}
+		elseif(empty($email_hash) && empty($this->user_loggedin['user_email_verification_hash']))
+		{
+			$new_email_hash = bin2hex(random_bytes(32));
+
+			$email_verification_email = "<h3>E-mail adres bevestigen op mijnscore.be</h3>
+			<p>
+			Dag " . $this->user_loggedin['user_username'] . ", <br />
+			<br />
+			Gelieve op <a href='http://mijnscore.be/users/email_verification/" .$new_email_hash . "'>deze link</a> te klikken om uw e-mail adres te bevestigen. Indien u deze e-mail niet gevraagd heeft, mag u deze e-mail negeren.<br />
+			<br />
+			Met vriendelijke groeten, <br />
+			" . WEBSITE_TITLE . "
+			</p>";
+
+			$this->user->set_user_email_verification_hash($this->db_con, $this->user_loggedin['user_id'], $new_email_hash);
+			$this->mail->send_mail($this->user_loggedin['user_email'], "Bevestig uw e-mailadres", $email_verification_email);
+
+			$this->view_data['notice'] = "We hebben u een bevestigings e-mail gestuurd. Volg de link in de e-mail om uw e-mail adres te bevestigen.";
+			$this->view('home/index', $this->view_data);
+		}
+		elseif($email_hash == $this->user_loggedin['user_email_verification_hash'])
+		{
+			$this->user->set_user_email_verification($this->db_con, $this->user_loggedin['user_id'], 1);
+
+			$this->view_data['notice'] = "Uw e-mail adres werd bevestigd.";
+			$this->view('home/index', $this->view_data);
+		}
+		else
+		{
+			$this->view_data['notice'] = "Uw bevestigings e-mail werd in het verleden al eens verstuurd.";
 			$this->view('home/index', $this->view_data);
 		}
 	}

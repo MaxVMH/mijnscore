@@ -61,6 +61,11 @@ class register extends Controller
 			$this->view_data['notice'] = "Deze gebruikersnaam is al in gebruik. Vul een nieuwe gebruikersnaam in.";
 			$this->view('register/form', $this->view_data);
 		}
+		elseif($this->user->get_user_by_email($this->db_con, $_POST['email']) != false)
+		{
+			$this->view_data['notice'] = "Dit e-mail adres is al in gebruik.";
+			$this->view('register/form', $this->view_data);
+		}
 		elseif($this->user->create_user($this->db_con, $_POST['username'], $_POST['password'], $_POST['email'], $_SERVER['REMOTE_ADDR']))
 		{
 			$this->view_data['notice'] = "Uw nieuwe account is aangemaakt. U kan onmiddellijk inloggen. U zal geen e-mail ontvangen.";

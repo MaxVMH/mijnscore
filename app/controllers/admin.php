@@ -10,7 +10,9 @@ class admin extends Controller
 		$this->db_con = $this->db_con();
 
 		$this->user = $this->model('User');
+		$this->mail = $this->model('Mail');
 		$this->league = $this->model('League');
+		$this->prediction = $this->model('Prediction');
 		$this->team_points = $this->model('Team_Points');
 		$this->prediction_points = $this->model('Prediction_Points');
 
@@ -83,6 +85,38 @@ class admin extends Controller
 		else
 		{
 			$this->view_data['notice'] = "Competitie niet gevonden.";
+			$this->view('home/index', $this->view_data);
+		}
+	}
+
+	public function send_notifications($league_id='')
+	{
+		if($this->user_loggedin['user_rank'] != 9)
+		{
+			$this->view_data['notice'] = "U heeft geen toegang tot deze pagina.";
+			$this->view('home/index', $this->view_data);
+		}
+		else
+		{
+			$users_email_notifications = $this->user->get_users_email_notifications($this->db_con);
+			foreach($users_email_notifications as $user_email_notification)
+			{
+				if($this->prediction->get_last_prediction_by_user_id_and_league_id($this->db_con, $user_email_notification['user_id'], $league_id))
+				{
+					$subject = "Herinnering van mijnscore.be";
+					$body = "<h3>Herinnering van mijnscore.be</h3>
+					<p>
+					Dag " . $user_email_notification['user_username'] . ", <br />
+					<br />
+					Dit is een herinnering om uw pronostiek in te vullen op <a href='http://mijnscore.be'>mijnscore.be</a>.<br />
+					<br />
+					Met vriendelijke groeten, <br />
+					" . WEBSITE_TITLE . "
+					</p>";
+					$this->mail->send_mail($user_email_notification['user_email'], $subject, $body);
+				}
+			}
+			$this->view_data['notice'] = "De herinneringen zijn verzonden.";
 			$this->view('home/index', $this->view_data);
 		}
 	}

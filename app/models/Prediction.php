@@ -397,4 +397,27 @@ class Prediction
 		$query->execute();
 		return $query->fetchAll();
 	}
+
+	public function get_last_prediction_by_user_id_and_league_id($db_con, $user_id, $league_id)
+	{
+		$query = $db_con->prepare('SELECT
+		predictions.*,
+		m.league_id as league_id,
+		m.match_datetime as match_datetime
+		FROM
+		predictions
+		INNER JOIN
+		matches m
+		ON
+		predictions.match_id = m.match_id AND league_id=:league_id
+		WHERE
+		user_id=:user_id
+		ORDER BY match_datetime DESC
+    LIMIT 1
+		');
+		$query->bindValue('user_id', $user_id, PDO::PARAM_STR);
+		$query->bindValue('league_id', $league_id, PDO::PARAM_STR);
+		$query->execute();
+		return $query->fetch();
+	}
 }

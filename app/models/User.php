@@ -86,10 +86,49 @@
       return $query->fetch();
     }
 
+    public function get_users_email_notifications($db_con)
+    {
+      $query = $db_con->prepare('SELECT * FROM users WHERE user_email_notification=1');
+      $query->execute();
+      return $query->fetchAll();
+    }
+
+    public function get_user_by_email($db_con, $email)
+    {
+      $query = $db_con->prepare('SELECT * FROM users WHERE user_email=:email');
+      $query->bindValue(':email', $email, PDO::PARAM_STR);
+      $query->execute();
+      return $query->fetch();
+    }
+
     public function set_user_email($db_con, $id, $email)
     {
       $query = $db_con->prepare('UPDATE users SET user_email=:email WHERE user_id=:id');
       $query->bindValue(':email', $email, PDO::PARAM_STR);
+      $query->bindValue(':id', $id, PDO::PARAM_STR);
+      return $query->execute();
+    }
+
+    public function set_user_email_verification_hash($db_con, $id, $email_hash)
+    {
+      $query = $db_con->prepare('UPDATE users SET user_email_verification_hash=:email_hash WHERE user_id=:id');
+      $query->bindValue(':email_hash', $email_hash, PDO::PARAM_STR);
+      $query->bindValue(':id', $id, PDO::PARAM_STR);
+      return $query->execute();
+    }
+
+    public function set_user_email_verification($db_con, $id, $email_verification)
+    {
+      $query = $db_con->prepare('UPDATE users SET user_email_verification=:email_verification WHERE user_id=:id');
+      $query->bindValue(':email_verification', $email_verification, PDO::PARAM_STR);
+      $query->bindValue(':id', $id, PDO::PARAM_STR);
+      return $query->execute();
+    }
+
+    public function set_user_email_notification($db_con, $id, $email_notification)
+    {
+      $query = $db_con->prepare('UPDATE users SET user_email_notification=:email_notification WHERE user_id=:id');
+      $query->bindValue(':email_notification', $email_notification, PDO::PARAM_STR);
       $query->bindValue(':id', $id, PDO::PARAM_STR);
       return $query->execute();
     }

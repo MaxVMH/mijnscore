@@ -3,8 +3,7 @@
 // includes core files and contains various settings
 
 // error settings
-error_reporting(E_ALL);
-ini_set("display_errors", 1);
+error_reporting(-1);
 
 // cookie stuff (settings)
 session_start();
@@ -17,6 +16,10 @@ define("DB_HOST", "localhost");
 define("DB_NAME", "name");
 define("DB_USER", "user");
 define("DB_PASS", "pass");
+
+// gmail settings
+define("GMAIL_ADDR", "user@gmail.com");
+define("GMAIL_PASS", "pass");
 
 // ip / url settings
 define("WEBSITE_URL", "//localhost");

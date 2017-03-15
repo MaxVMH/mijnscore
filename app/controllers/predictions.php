@@ -24,23 +24,16 @@ class predictions extends Controller
 		$this->league->set_leagues_status_auto($this->db_con);
 	}
 
-	public function index($league_id='', $playday='', $user_id='')
+	public function index($league_id='1', $playday='', $user_id='')
 	{
-		if(empty($league_id))
-		{
-			$league_id = 1;
-		}
-
 		if($this->user_loggedin == false)
 		{
-
 			$this->view_data['notice'] = "U bent niet ingelogd.";
 			$this->view('home/index', $this->view_data);
 		}
 		elseif($league = $this->league->get_league_by_id($this->db_con, $league_id))
 		{
 			$this->view_data['league'] = $league;
-
 
 			if(empty($playday))
 			{
