@@ -10,7 +10,7 @@ ini_set("display_errors", 1);
 session_start();
 
 // language settings
-setlocale(LC_ALL, 'nl_NL');
+setlocale(LC_ALL, 'nl_BE.UTF-8');
 
 // database settings
 define("DB_HOST", "localhost");
