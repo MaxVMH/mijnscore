@@ -1,8 +1,5 @@
 <?php
-// this file is the database installer
-// before you continue, make sure you filled in your MySQL credentials in /app/init.php
-// install the database by moving this file to /app/public_html/ and run it in your browser
-// afterwards, move this file back to /app/dev/ (wouldn't be harmfull when you run it again but we like to keep things clean you know)
+// this file installs the database
 require_once '../app/init.php';
 
 $database = new Database;
