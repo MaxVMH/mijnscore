@@ -24,6 +24,13 @@ class League
 		return $query->execute();
 	}
 
+	public function delete_league_by_id($db_con, $id)
+	{
+		$query = $db_con->prepare('DELETE FROM leagues WHERE league_id=:id');
+		$query->bindValue(':id', $id, PDO::PARAM_STR);
+		return $query->execute();
+	}
+
 	public function get_leagues_all($db_con)
 	{
 		$query = $db_con->prepare('SELECT * FROM leagues');
