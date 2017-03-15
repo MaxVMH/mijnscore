@@ -11,7 +11,7 @@ Op mijnscore.be kan je je pronostiek invullen voor wedstrijden van het Belgische
 Hoe meer punten je verzamelt, hoe hoger je eindigt in het eindklassement.<br />
 <br />
 <h3>Hoe kan ik een fout melden of verbetering voorstellen?</h3>
-Door een <a href="https://github.com/MaxVMH/mijnscore/">issue te openen op github</a>, een <a href="messages_create/form/0/1">berichtje te sturen in het spel</a> of een berichtje achter te laten in <a href="http://www.9lives.be/forum/webdesign-webdevelopment/1050659-voetbalpronostiek.html">deze thread</a> of in de prono- en nabesprekingthreads.<br />
+Door een <a href="https://github.com/MaxVMH/mijnscore/">issue te openen op github</a>, een <a href="messages_create/form/0/1">berichtje te sturen in het spel</a> of een berichtje achter te laten in <a href="http://www.9lives.be/forum/webdesign-webdevelopment/1050659-voetbalpronostiek.html">deze thread</a> of in de prono- en nabesprekingthreads op 9lives.<br />
 <br />
 
 <hr />
@@ -25,7 +25,7 @@ Vul je pronostiek op tijd in om teleurstellingen te voorkomen.<br />
 Het huidige tijdstip volgens onze server kan je zien op je profielpagina (naast "Laatst online").<br />
 <br />
 <h3>Kan ik mijn pronostiek wijzigen?</h3>
-Ja, tot op het aangegeven tijdstip naast de wedstrijd.<br />
+Ja, tot wanneer de wedstrijd aanvangt (aangegeven tijdstip naast de wedstrijd).<br />
 <br />
 <h3>Hoe worden de punten berekend?</h3>
 <ul>
@@ -43,7 +43,6 @@ De kolom "Punten" naast je pronostiek geeft het aantal punten weer van zodra we 
 Ja. Via de gebruiker zijn/haar profiel (je kan de <a href="users/search">gebruikersnaam opzoeken</a>), of door in <a href="predictions/score">het scorebord</a> op de gebruiker zijn/haar score te klikken.<br />
 <br />
 
-
 <hr />
 
 <h3>Waarom is mijn account geblokkeerd?</h3>
@@ -51,13 +50,12 @@ Wanneer er meerdere keren na elkaar een fout wachtwoord wordt ingegeven, blokker
 Wanneer een account geblokkeerd is, tonen we hoeveel pogingen er geweest zijn en hoe lang we je account nog blokkeren.<br />
 <br />
 <h3>Waarom is mijn account verwijderd?</h3>
-Om plaats te maken voor actieve gebruikers, verwijderen we: <br />
+Om het testen van mijnscore in goede banen te leiden, komen de volgende accounts in aanmerking voor verwijdering: <br />
 <ul>
 	<li>Accounts die de eerste 2 dagen (48 uur) na registratie niet inloggen.</li>
 	<li>Accounts die 90 opeenvolgende dagen niet inloggen.</li>
 	<li>Accounts waarvan de gebruiker niet deelneemt aan de 9lives voetbalpronostiek.</li>
 </ul>
-We verwijderen accounts doelbewust om de niet-testers uit onze database te houden.
 Werd je account verwijderd en denk je dat het om een vergissing gaat, neem dan contact op met de sitebeheerder.<br />
 <br />
 
