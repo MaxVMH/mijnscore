@@ -17,6 +17,19 @@ class leagues_admin extends Controller
 		$this->view_data['leagues_current'] = $this->league->get_leagues_by_status($this->db_con, 1);
 	}
 
+	public function index()
+	{
+		if($this->user_loggedin['user_rank'] != 9)
+		{
+			$this->view_data['notice'] = "U heeft geen toegang tot deze pagina.";
+			$this->view('home/index', $this->view_data);
+		}
+		else
+		{
+			$this->view('home/index', $this->view_data);
+		}
+	}
+
 	public function edit($league_id='')
 	{
 		if($this->user_loggedin['user_rank'] != 9)
@@ -126,6 +139,51 @@ class leagues_admin extends Controller
 		{
 			$this->view_data['leagues'] = $this->league->get_leagues_all($this->db_con);
 			$this->view('leagues/forms/create', $this->view_data);
+		}
+	}
+
+	public function delete($league_id='', $confirm='')
+	{
+		if($this->user_loggedin['user_rank'] != 9)
+		{
+			$this->view_data['notice'] = "U heeft geen toegang tot deze pagina.";
+			$this->view('home/index', $this->view_data);
+		}
+		elseif(!empty($league_id))
+		{
+			if($league = $this->league->get_league_by_id($this->db_con, $league_id))
+			{
+				if(empty($confirm))
+				{
+					$this->view_data['league'] = $league;
+					$this->view_data['notice'] = "Competitie om te verwijderen gevonden.";
+					$this->view('leagues/forms/delete', $this->view_data);
+				}
+				else
+				{
+					if($this->league->delete_league_by_id($this->db_con, $league_id))
+					{
+						$this->view_data['notice'] = "Competitie verwijderd.";
+						$this->view_data['leagues'] = $this->league->get_leagues_all($this->db_con);
+						$this->view('admin/index', $this->view_data);
+					}
+					else
+					{
+						$this->view_data['notice'] = "Er is iets fout gegaan.";
+						$this->view('home/index', $this->view_data);
+					}
+				}
+			}
+			else
+			{
+				$this->view_data['notice'] = "Geen competitie gevonden.";
+				$this->view('home/index', $this->view_data);
+			}
+		}
+		else
+		{
+			$this->view_data['notice'] = "Geen competitie gevonden.";
+			$this->view('home/index', $this->view_data);
 		}
 	}
 }
