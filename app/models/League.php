@@ -40,7 +40,7 @@ class League
 
 	public function get_leagues_by_status($db_con, $status)
 	{
-		$query = $db_con->prepare('SELECT * FROM leagues WHERE league_status=:status');
+		$query = $db_con->prepare('SELECT * FROM leagues WHERE league_status=:status ORDER BY league_tag');
 		$query->bindValue(':status', $status, PDO::PARAM_STR);
 		$query->execute();
 		return $query->fetchAll();

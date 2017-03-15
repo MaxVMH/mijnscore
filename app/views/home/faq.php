@@ -20,12 +20,12 @@ Door een <a href="https://github.com/MaxVMH/mijnscore/">issue te openen op githu
 <a href="login/form">Log in</a> (maak <a href="register/form">een nieuw account</a> mocht je dat nog niet hebben) en klik op "<a href="predictions/index">Pronostiek</a>" in het menu.<br />
 <br />
 <h3>Tot wanneer kan ik mijn pronostiek invullen?</h3>
-Tot op het aangegeven tijdstip naast de wedstrijd.
+Tot wanneer de wedstrijd aanvangt (het aangegeven tijdstip naast de wedstrijd).
 Vul je pronostiek op tijd in om teleurstellingen te voorkomen.<br />
 Het huidige tijdstip volgens onze server kan je zien op je profielpagina (naast "Laatst online").<br />
 <br />
 <h3>Kan ik mijn pronostiek wijzigen?</h3>
-Ja, tot wanneer de wedstrijd aanvangt (aangegeven tijdstip naast de wedstrijd).<br />
+Ja, tot wanneer de wedstrijd aanvangt (het aangegeven tijdstip naast de wedstrijd).<br />
 <br />
 <h3>Hoe worden de punten berekend?</h3>
 <ul>
@@ -56,7 +56,7 @@ Om het testen van mijnscore in goede banen te leiden, komen de volgende accounts
 	<li>Accounts die 90 opeenvolgende dagen niet inloggen.</li>
 	<li>Accounts waarvan de gebruiker niet deelneemt aan de 9lives voetbalpronostiek.</li>
 </ul>
-Werd je account verwijderd en denk je dat het om een vergissing gaat, neem dan contact op met de sitebeheerder.<br />
+Werd je account verwijderd en denk je dat het om een vergissing gaat, neem dan contact op (zie "Hoe kan ik een fout melden of verbetering voorstellen?").<br />
 <br />
 
 
