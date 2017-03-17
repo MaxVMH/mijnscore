@@ -3,7 +3,8 @@ require_once '../app/views/header.php';
 ?>
 <h3>Nieuw account</h3>
 Eerst en vooral: mijnscore.be is een webdevelopment oefening en daarom geen echte website, game of tool. Omdat mijnscore.be nog volop in ontwikkeling is, kan het zijn dat er hier en daar iets niet werkt.
-<h4>Accounts waarvan we denken dat de gebruiker niet deelneemt aan de 9lives pronostiek komen in aanmerking voor verwijdering.</h4>
+<h4>U zal geen e-mails ontvangen van mijnscore.be, tenzij u daarvoor kiest in Account -> Bewerk e-mailadres.</h4>
+
 <form action="register/submit" method="post">
 	<table>
 		<tr>
