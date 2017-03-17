@@ -1,9 +1,13 @@
 <?php
 class Mail
 {
-	public function send_email($receiver, $subject, $body)
+	public function __construct()
 	{
 		require '../app/libraries/PHPMailer/PHPMailerAutoload.php';
+	}
+
+	public function send_email($receiver, $subject, $body)
+	{
 
 		$mail = new PHPMailer();
 		$mail->IsSMTP();
