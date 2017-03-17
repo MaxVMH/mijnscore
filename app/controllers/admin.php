@@ -103,17 +103,7 @@ class admin extends Controller
 			{
 				if($this->prediction->get_last_prediction_by_user_id_and_league_id($this->db_con, $user_email_notification['user_id'], $league_id))
 				{
-					$subject = "Herinnering van mijnscore.be";
-					$body = "<h3>Herinnering van mijnscore.be</h3>
-					<p>
-					Dag " . $user_email_notification['user_username'] . ", <br />
-					<br />
-					Dit is een herinnering om uw pronostiek in te vullen op <a href='http://mijnscore.be'>mijnscore.be</a>.<br />
-					<br />
-					Met vriendelijke groeten, <br />
-					" . WEBSITE_TITLE . "
-					</p>";
-					$this->mail->send_mail($user_email_notification['user_email'], $subject, $body);
+					$this->mail->send_notification_email($user_email_notification['user_email'], $user_email_notification['user_username']);
 				}
 			}
 			$this->view_data['notice'] = "De herinneringen zijn verzonden.";
