@@ -96,9 +96,8 @@ class users extends Controller
 				}
 				elseif($this->user->set_user_email($this->db_con, $this->user_loggedin['user_id'], $_POST['email']))
 				{
-					$this->user->set_user_email_verification_hash($this->db_con, $this->user_loggedin['user_id'], 0);
 					$this->user->set_user_email_verification($this->db_con, $this->user_loggedin['user_id'], 0);
-					$this->view_data['notice'] = "Uw e-mailadres werd bijgewerkt. Vergeet niet uw nieuw e-mailadres the bevestigen.";
+					$this->view_data['notice'] = "Uw e-mailadres werd bijgewerkt. Vergeet niet uw nieuw e-mailadres te bevestigen.";
 					$this->view_data['user_loggedin'] = $this->user->get_user_loggedin($this->db_con);
 					$this->view('users/forms/email', $this->view_data);
 				}
@@ -145,12 +144,12 @@ class users extends Controller
 				}
 				elseif(password_verify($_POST['password'], $this->user_loggedin['user_password_hash']) == false)
 				{
-					$this->view_data['notice'] = "Uw huidig wachtwoord is niet correct.";
+					$this->view_data['notice'] = "Huidig wachtwoord is niet correct.";
 					$this->view('users/forms/password', $this->view_data);
 				}
 				elseif($this->user->set_user_password($this->db_con, $this->user_loggedin['user_id'], $_POST['password_new']))
 				{
-					$this->view_data['notice'] = "Uw wachtwoord is bijgewerkt.";
+					$this->view_data['notice'] = "Wachtwoord is bijgewerkt.";
 					$this->user_loggedin = $this->user->get_user_loggedin($this->db_con);
 					$this->view('users/forms/password', $this->view_data);
 				}
@@ -181,13 +180,13 @@ class users extends Controller
 		if($email_notification == 0)
 		{
 			$this->user->set_user_email_notification($this->db_con, $this->user_loggedin['user_id'], $email_notification);
-			$this->view_data['notice'] = "E-mail herinneringen worden uitgeschakeld.";
+			$this->view_data['notice'] = "E-mail herinneringen uitgeschakeld.";
 			$this->view('home/index', $this->view_data);
 		}
 		elseif($email_notification == 1)
 		{
 			$this->user->set_user_email_notification($this->db_con, $this->user_loggedin['user_id'], $email_notification);
-			$this->view_data['notice'] = "E-mail herinneringen worden ingeschakeld.";
+			$this->view_data['notice'] = "E-mail herinneringen ingeschakeld.";
 			$this->view('home/index', $this->view_data);
 		}
 		else
@@ -205,26 +204,41 @@ class users extends Controller
 		}
 		elseif(empty($email_hash) && empty($this->user_loggedin['user_email_verification_hash']))
 		{
-			$new_email_hash = bin2hex(random_bytes(32));
+			// make new verification hash and send new verification e-mail
+			$new_email_verification_hash = bin2hex(random_bytes(32));
+			$this->user->set_user_email_verification_hash($this->db_con, $this->user_loggedin['user_id'], $new_email_verification_hash);
 
-			$email_verification_email = "<h3>E-mail adres bevestigen op mijnscore.be</h3>
-			<p>
-			Dag " . $this->user_loggedin['user_username'] . ", <br />
-			<br />
-			Gelieve op <a href='http://mijnscore.be/users/email_verification/" .$new_email_hash . "'>deze link</a> te klikken om uw e-mail adres te bevestigen. Indien u deze e-mail niet gevraagd heeft, mag u deze e-mail negeren.<br />
-			<br />
-			Met vriendelijke groeten, <br />
-			" . WEBSITE_TITLE . "
-			</p>";
-
-			$this->user->set_user_email_verification_hash($this->db_con, $this->user_loggedin['user_id'], $new_email_hash);
-			$this->mail->send_mail($this->user_loggedin['user_email'], "Bevestig uw e-mailadres", $email_verification_email);
-
-			$this->view_data['notice'] = "We hebben u een bevestigings e-mail gestuurd. Volg de link in de e-mail om uw e-mail adres te bevestigen.";
-			$this->view('home/index', $this->view_data);
+			if($this->mail->send_verification_email($this->user_loggedin['user_email'], $this->user_loggedin['user_username'], $new_email_verification_hash))
+			{
+				$this->view_data['notice'] = "Bevestigings e-mail verstuurd. Volg de link in de e-mail om uw e-mail adres te bevestigen.";
+				$this->view('home/index', $this->view_data);
+			}
+			else
+			{
+				$this->view_data['notice'] = "Er is een fout opgetreden tijdens het versturen van de bevestigings e-mail.";
+				$this->view('home/index', $this->view_data);
+			}
+		}
+		elseif(empty($email_hash) && !empty($this->user_loggedin['user_email_verification_hash']))
+		{
+			// check when last verification e-mail was sent, then send new or deny
+			$user_email_verification_hash_datetime = new DateTime($this->user_loggedin['user_email_verification_hash_datetime']);
+			$verification_hash_expiration_datetime = new DateTime('-1 HOUR');
+			if($user_email_verification_hash_datetime <= $verification_hash_expiration_datetime)
+			{
+				$this->mail->send_verification_email($this->user_loggedin['user_email'], $this->user_loggedin['user_username'], $this->user_loggedin['user_email_verification_hash']);
+				$this->view_data['notice'] = "Bevestigings e-mail verstuurd. Volg de link in de e-mail om uw e-mail adres te bevestigen.";
+				$this->view('home/index', $this->view_data);
+			}
+			else
+			{
+				$this->view_data['notice'] = "Bevestigings e-mail niet verstuurd, want u heeft er onlangs al een opgevraagd. Probeer het later opnieuw.";
+				$this->view('home/index', $this->view_data);
+			}
 		}
 		elseif($email_hash == $this->user_loggedin['user_email_verification_hash'])
 		{
+			// e-mail verification correct
 			$this->user->set_user_email_verification($this->db_con, $this->user_loggedin['user_id'], 1);
 
 			$this->view_data['notice'] = "Uw e-mail adres werd bevestigd.";
@@ -232,7 +246,7 @@ class users extends Controller
 		}
 		else
 		{
-			$this->view_data['notice'] = "Uw bevestigings e-mail werd in het verleden al eens verstuurd.";
+			$this->view_data['notice'] = "Er kon geen bevestigings e-mail worden verstuurd.";
 			$this->view('home/index', $this->view_data);
 		}
 	}
