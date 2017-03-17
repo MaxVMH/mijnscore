@@ -160,19 +160,30 @@ class matches_admin extends Controller
 						{
 							if($this->match->create_match($this->db_con, $matches_datetimes[$key], '', $league_id, $playday, $home_team_id, $matches_awayteams[$key]))
 							{
-								$this->view_data['notice'] = "Wedstrijden toegevoegd.";
+								$this->view_data['notice'] = "Wedstrijden toegevoegd. Gelieve de wedstrijden te bevestigen door het bewerkingsformulier eenmalig in te dienen.";
+								$matches_added = true;
 							}
 							else
 							{
 								$this->view_data['notice'] = "Er is iets fout gegaan tijdens het toevoegen van de wedstrijden.";
+								$matches_added = false;
 							}
 						}
 						else
 						{
 							$this->view_data['notice'] = "Er is iets fout gegaan tijdens het toevoegen van de wedstrijden.";
+							$matches_added = false;
 						}
 					}
-					$this->view('home/index', $this->view_data);
+					if($matches_added == true)
+					{
+						$this->view_data['matches'] = $this->match->get_matches_by_league_id_and_playday($this->db_con, $league_id, $playday);
+						$this->view('matches/forms/edit_multiple', $this->view_data);
+					}
+					else
+					{
+						$this->view('home/index', $this->view_data);
+					}
 				}
 			}
 		}
