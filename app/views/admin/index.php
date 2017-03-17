@@ -46,11 +46,12 @@ foreach($data['leagues'] as $league)
 			</td>
 			<td>
 				<ul>
-					<li><a href="matches/index/<?= $league['league_id']; ?>">Bekijk wedstrijden</a></li>
+					<li><a href="matches_admin/create_multiple/<?= $league['league_id']; ?>">Nieuwe wedstrijden</a></li>
 					<li><a href="matches_admin/create/<?= $league['league_id']; ?>">Nieuwe wedstrijd</a></li>
 				</ul>
 				<ul>
-					<li><a href="matches_admin/edit_multiple/<?= $league['league_id']; ?>">Geef scores in</a></li>
+					<li><a href="matches/index/<?= $league['league_id']; ?>">Bekijk wedstrijden</a></li>
+					<li><a href="matches_admin/edit_multiple/<?= $league['league_id']; ?>">Bewerk wedstrijden</a></li>
 				</ul>
 			</td>
 			<td>
