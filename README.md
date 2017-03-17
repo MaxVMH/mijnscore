@@ -30,8 +30,6 @@ An unfinished soccer prediction web app written in PHP & HTML.
 
 * Leagues have an option to be hidden for users, enabled by default. Make sure to edit the league and set it to active.
 
-* Matches have an option to not allow predictions, enabled by default. This option is hidden. Just edit the match once (you don't have to change anything, but make sure you press the edit button at the bottom of the match edit form). This is to force administrators to check the match details before users can start entering their predictions. This will be changed when the admin match creator gets a rework.
-
 * Every time the predictions page gets loaded, it automatically checks if a match has begun or not. To confirm your server time, simply go to your profile page and look at the last activity date/time (refresh if necessary).
 
 * When a match has finished, enter the score and let mijnscore calculate the user points and rankings from the administrator menu. You can also calculate the teams points and rankings.
