@@ -66,17 +66,36 @@ class register extends Controller
 			$this->view_data['notice'] = "Dit e-mail adres is al in gebruik.";
 			$this->view('register/form', $this->view_data);
 		}
-		elseif($this->user->create_user($this->db_con, $_POST['username'], $_POST['password'], $_POST['email'], $_SERVER['REMOTE_ADDR']))
-		{
-			$this->view_data['notice'] = "Uw nieuwe account is aangemaakt. U kan onmiddellijk inloggen. U zal geen e-mail ontvangen.";
-			$this->view('home/index', $this->view_data);
-		}
 		else
 		{
-			$this->view_data['notice'] = "Er is iets fout gegaan tijdens het maken van uw nieuwe account.";
-			$this->view('register/form', $this->view_data);
+			$last_registered_user = $this->user->get_last_user_by_user_registration_datetime($this->db_con);
+
+			$last_registered_user_datetime = new DateTime($last_registered_user['user_registration_datetime']);
+			$last_registered_user_expiration_datetime = new DateTime('-5 MINUTE');
+
+			$registered_users_amount = $this->user->count_users($this->db_con);
+
+			if($last_registered_user_datetime >= $last_registered_user_expiration_datetime)
+			{
+				$this->view_data['notice'] = "Ons registratiesysteem is tijdelijk afgesloten om grote hoeveelheden nieuwe gebruikers tegen te gaan. Probeer opnieuw binnen enkele minuten.";
+				$this->view('register/form', $this->view_data);
+			}
+			elseif($registered_users_amount['users_amount'] >= 100)
+			{
+				$this->view_data['notice'] = "Ons registratiesysteem is afgesloten omdat we de kaap van 100 gebruikers hebben bereikt.";
+				$this->view('register/form', $this->view_data);
+			}
+			elseif($this->user->create_user($this->db_con, $_POST['username'], $_POST['password'], $_POST['email'], $_SERVER['REMOTE_ADDR']))
+			{
+				$this->view_data['notice'] = "Uw nieuwe account is aangemaakt. U kan onmiddellijk inloggen.";
+				$this->view('home/index', $this->view_data);
+			}
+			else
+			{
+				$this->view_data['notice'] = "Er is iets fout gegaan tijdens het maken van uw nieuwe account.";
+				$this->view('register/form', $this->view_data);
+			}
 		}
 	}
-
 }
 ?>
