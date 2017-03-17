@@ -48,6 +48,7 @@ $query_leagues="CREATE TABLE `leagues` (
 	`league_playday_current` INT(3) NOT NULL DEFAULT 0,
 	`league_playday_total` INT(3) NOT NULL DEFAULT 0,
 	`league_status` INT(1) NOT NULL DEFAULT 0,
+	`league_last_notification_datetime` DATETIME NOT NULL DEFAULT '1000-01-01 00:00:00',
 	`league_type` INT(1) NOT NULL DEFAULT 0,
 
 	PRIMARY KEY (`league_id`)
