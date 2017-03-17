@@ -36,4 +36,4 @@ An unfinished soccer prediction web app written in PHP & HTML.
 
 * When a match has finished, enter the score and let mijnscore calculate the user points and rankings from the administrator menu. You can also calculate the teams points and rankings.
 
-* Relationships between leagues is modelled after the Belgian play-offs system. Example: League A is for the regular season. League B is for the play-offs and has a relationship with League A. The season overall user ranking in League B includes half of the points of League A.
+* Relationships between leagues is modeled after the Belgian play-offs system. Example: League A is for the regular season. League B is for the play-offs and has a relationship with League A. The season overall user ranking in League B includes half of the points of League A.
