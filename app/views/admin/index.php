@@ -30,9 +30,6 @@ foreach($data['leagues'] as $league)
 					<li><a href="leagues_admin/edit/<?= $league['league_id']; ?>">Bewerk competitie</a></li>
 					<li><a href="leagues_admin/delete/<?= $league['league_id']; ?>">Verwijder competitie</a></li>
 				</ul>
-				<ul>
-					<li><a href="admin/send_notifications/<?= $league['league_id']; ?>">Verzend herinneringen</a></li>
-				</ul>
 			</td>
 			<td>
 				<ul>
