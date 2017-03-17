@@ -61,6 +61,66 @@ class Mail
 		}
 	}
 
+	public function send_notification_emails($db_con)
+	{
+		$result = false;
+		
+		$query = $db_con->prepare('SELECT * FROM leagues WHERE league_status=1');
+		$query->execute();
+		$active_leagues = $query->fetchAll();
+		foreach($active_leagues as $active_league)
+		{
+			$query = $db_con->prepare('SELECT * FROM matches WHERE league_id=:league_id AND league_playday=:league_playday_current ORDER BY match_datetime ASC LIMIT 1');
+			$query->bindValue(':league_id', $active_league['league_id'], PDO::PARAM_STR);
+			$query->bindValue(':league_playday_current', $active_league['league_playday_current'], PDO::PARAM_STR);
+			$query->execute();
+			$league_next_match = $query->fetch();
+
+			$league_next_match_notification_datetime = new DateTime($league_next_match['match_datetime']);
+			$league_next_match_notification_datetime->sub(new DateInterval("P1DT4H"));
+			$now_datetime = new DateTime();
+
+			if($now_datetime->format('Y-m-d H:i:s') < $league_next_match['match_datetime'] && $league_next_match_notification_datetime->format('Y-m-d H:i:s') < $now_datetime->format('Y-m-d H:i:s') && $active_league['league_last_notification_datetime'] < $league_next_match_notification_datetime->format('Y-m-d H:i:s'))
+			{
+				$query = $db_con->prepare('UPDATE leagues SET league_last_notification_datetime=NOW() WHERE league_id=:league_id');
+				$query->bindValue(':league_id', $active_league['league_id'], PDO::PARAM_STR);
+				$query->execute();
+
+				$query = $db_con->prepare('SELECT * FROM users WHERE user_email_notification=1');
+				$query->execute();
+				$users_email_notifications = $query->fetchAll();
+				foreach($users_email_notifications as $user_email_notification)
+				{
+					$query = $db_con->prepare('
+					SELECT
+					predictions.*,
+					m.league_id as league_id,
+					m.match_datetime as match_datetime
+					FROM
+					predictions
+					INNER JOIN
+					matches m
+					ON
+					predictions.match_id = m.match_id AND league_id=:league_id
+					WHERE
+					user_id=:user_id
+					ORDER BY match_datetime DESC
+					LIMIT 1');
+					$query->bindValue('user_id', $user_email_notification['user_id'], PDO::PARAM_STR);
+					$query->bindValue('league_id', $active_league['league_id'], PDO::PARAM_STR);
+					$query->execute();
+					if($query->fetch())
+					{
+						$this->send_notification_email($user_email_notification['user_email'], $user_email_notification['user_username']);
+						$result = true;
+					}
+				}
+			}
+		}
+
+		return $result;
+	}
+
 	public function send_notification_email($receiver_email, $receiver_username)
 	{
 		$subject = "Herinnering van mijnscore.be";
