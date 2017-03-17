@@ -4,7 +4,7 @@ An unfinished soccer prediction web app written in PHP & HTML.
 
 # Installation instructions
 
-* Unzip and move the files to an appropiate folder
+* Unzip and move the files to an appropriate folder
 
 * Apache needs the mijnscore /public_html/ folder set as document root folder
 
