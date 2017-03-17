@@ -12,6 +12,7 @@ $query_users="CREATE TABLE `users` (
 	`user_email` VARCHAR(64) COLLATE utf8_unicode_ci NOT NULL,
 	`user_email_verification` TINYINT(1) NOT NULL DEFAULT '0',
 	`user_email_verification_hash` VARCHAR(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+	`user_email_verification_hash_datetime` DATETIME NOT NULL DEFAULT '1000-01-01 00:00:00',
 	`user_email_notification` TINYINT(1) NOT NULL DEFAULT '0',
 	`user_active` TINYINT(1) NOT NULL DEFAULT '0',
 	`user_rank` TINYINT(1) NOT NULL DEFAULT '0',
