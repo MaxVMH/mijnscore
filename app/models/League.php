@@ -54,11 +54,11 @@ class League
 		return $query->fetch();
 	}
 
-	// this method sets the current playday of leagues by checking the date/time of the next match
+	// this method sets the current playday of active leagues by checking the date/time of the next match
 	public function set_leagues_playday_auto($db_con)
 	{
-		// search for leagues that have not reached their last playday
-		$query = $db_con->prepare('SELECT * FROM leagues WHERE league_playday_current<league_playday_total');
+		// search for active leagues that have not reached their last playday
+		$query = $db_con->prepare('SELECT * FROM leagues WHERE league_playday_current<league_playday_total AND league_status=1');
 		$query->execute();
 		foreach($query->fetchAll() as $league)
 		{
@@ -91,14 +91,14 @@ class League
 		$query->execute();
 		foreach($query->fetchAll() as $league)
 		{
-			// then search if the league had a match in the nearby past
+			// then search if the league has matches in the nearby past & future
 			$query = $db_con->prepare('SELECT * FROM matches WHERE league_id=:league_id AND match_datetime>(NOW() - INTERVAL 1 MONTH) ORDER BY match_datetime DESC LIMIT 1');
 			$query->bindValue(':league_id', $league['league_id'], PDO::PARAM_STR);
 			$query->execute();
 			$match = $query->fetch();
 			if(empty($match))
 			{
-				// the league didn't have a match in a nearby past, so it can be set inactive
+				// the league doesn't have a match in the nearby past or future, so it can be set inactive
 				$query = $db_con->prepare('UPDATE leagues SET league_status=0 WHERE league_id=:league_id');
 				$query->bindValue(':league_id', $league['league_id'], PDO::PARAM_STR);
 				$query->execute();
@@ -112,12 +112,12 @@ class League
 		foreach($query->fetchAll() as $league)
 		{
 			// then search if the league has a match in the nearby future
-			$query = $db_con->prepare('SELECT * FROM matches WHERE league_id=:league_id AND match_datetime<(NOW() + INTERVAL 1 MONTH) ORDER BY match_datetime DESC LIMIT 1');
+			$query = $db_con->prepare('SELECT * FROM matches WHERE league_id=:league_id AND match_datetime>NOW() AND match_datetime<(NOW() + INTERVAL 15 DAY) ORDER BY match_datetime DESC LIMIT 1');
 			$query->bindValue(':league_id', $league['league_id'], PDO::PARAM_STR);
 			$query->execute();
 			if($match = $query->fetch())
 			{
-				// the league has a match in the nearby future, so it can be set active
+				// the league has a match in the nearby future, so the league can be set active
 				$query = $db_con->prepare('UPDATE leagues SET league_status=1 WHERE league_id=:league_id');
 				$query->bindValue(':league_id', $league['league_id'], PDO::PARAM_STR);
 				$query->execute();

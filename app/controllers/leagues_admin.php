@@ -59,7 +59,7 @@ class leagues_admin extends Controller
 					$this->view_data['notice'] = "Vul het totale aantal speeldagen in.";
 					$this->view('leagues/forms/edit', $this->view_data);
 				}
-				elseif(empty($_POST['league_status']))
+				elseif(!isset($_POST['league_status']))
 				{
 					$this->view_data['notice'] = "Geen status gevonden.";
 					$this->view('leagues/forms/edit', $this->view_data);

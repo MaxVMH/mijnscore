@@ -40,7 +40,7 @@ require_once '../app/views/header.php';
 			<td class="align-left">
 				<select name="league_status">
 					<option value="1"<?php if($data['league']['league_status'] == "1"){ echo " selected=\"selected\""; } ?>>Actief</option>
-					<option value="0"<?php if($data['league']['league_status'] == "0"){ echo " selected=\"selected\""; } ?>>Verborgen</option>
+					<option value="0"<?php if($data['league']['league_status'] == "0"){ echo " selected=\"selected\""; } ?>>Inactief (verborgen)</option>
 				</select>
 			</td>
 		</tr>
