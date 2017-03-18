@@ -160,7 +160,7 @@ class matches_admin extends Controller
 						{
 							if($this->match->create_match($this->db_con, $matches_datetimes[$key], '', $league_id, $playday, $home_team_id, $matches_awayteams[$key]))
 							{
-								$this->view_data['notice'] = "Wedstrijden toegevoegd. Gelieve de wedstrijden te bevestigen door het bewerkingsformulier eenmalig in te dienen.";
+								$this->view_data['notice'] = "Wedstrijden toegevoegd. Gebruikers kunnen pronostieken indienen nadat u het bewerkingsformulier eenmalig indient.";
 								$matches_added = true;
 							}
 							else
