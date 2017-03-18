@@ -156,12 +156,17 @@ class leagues_admin extends Controller
 				if(empty($confirm))
 				{
 					$this->view_data['league'] = $league;
-					$this->view_data['notice'] = "Competitie om te verwijderen gevonden.";
+					$this->view_data['notice'] = "Bent u zeker dat u " . $league['league_name'] . " wilt verwijderen?";
 					$this->view('leagues/forms/delete', $this->view_data);
 				}
 				else
 				{
-					if($this->league->delete_league_by_id($this->db_con, $league_id))
+					if(empty($_POST['delete']))
+					{
+						$this->view_data['notice'] = "Er is iets fout gegaan.";
+						$this->view('home/index', $this->view_data);
+					}
+					elseif($this->league->delete_league_by_id($this->db_con, $league_id))
 					{
 						$this->view_data['notice'] = "Competitie verwijderd.";
 						$this->view_data['leagues'] = $this->league->get_leagues_all($this->db_con);

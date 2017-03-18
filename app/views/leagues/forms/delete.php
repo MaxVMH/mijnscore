@@ -12,7 +12,12 @@ require_once '../app/views/header.php';
 			<td class="align-left"><?= $data['league']['league_name']; ?></td>
 		</tr>
 		<tr>
-			<th colspan="2"><input type="submit" name="edit" value="Verwijder competitie" /></th>
+			<th colspan="2">
+				<br />
+				<input type="submit" name="delete" value="Verwijder competitie" /><br />
+				<br />
+				<a href="admin">Ga terug</a>
+			</th>
 		</tr>
 	</table>
 </form>
