@@ -22,16 +22,16 @@ class Team
     return $query->fetch();
   }
 
-  public function get_teams($db_con)
+  public function get_teams_all($db_con)
   {
     $query = $db_con->prepare('SELECT * FROM teams');
     $query->execute();
     return $query->fetchAll();
   }
 
-  public function get_teams_all($db_con)
+  public function get_teams_all_ordered_by_team_tag_asc($db_con)
   {
-    $query = $db_con->prepare('SELECT * FROM teams');
+    $query = $db_con->prepare('SELECT * FROM teams ORDER BY team_tag ASC');
     $query->execute();
     return $query->fetchAll();
   }

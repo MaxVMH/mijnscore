@@ -31,12 +31,12 @@ class teams extends Controller
 		}
 		elseif(!empty($league_id))
 		{
-			$this->view_data['teams'] = $this->teams_leagues->get_teams_by_league_id($this->db_con, $league_id);
+			$this->view_data['teams'] = $this->teams_leagues->get_teams_by_league_id_ordered_by_team_tag_asc($this->db_con, $league_id);
 			$this->view('teams/multiple', $this->view_data);
 		}
 		else
 		{
-			$this->view_data['teams'] = $this->team->get_teams($this->db_con);
+			$this->view_data['teams'] = $this->team->get_teams_all_ordered_by_team_tag_asc($this->db_con);
 			$this->view('teams/multiple', $this->view_data);
 		}
 	}
@@ -63,28 +63,8 @@ class teams extends Controller
 		else
 		{
 			$this->view_data['notice'] = "Ploeg niet gevonden.";
-			$this->view_data['teams'] = $this->team->get_teams($this->db_con);
+			$this->view_data['teams'] = $this->team->get_teams_all_ordered_by_team_tag_asc($this->db_con);
 			$this->view('teams/multiple', $this->view_data);
-		}
-	}
-
-	public function multiple($league_id='')
-	{
-		if($this->user_loggedin == false)
-		{
-			$this->view_data['notice'] = "U bent niet ingelogd.";
-			$this->view('home/index', $this->view_data);
-		}
-		elseif($league = $this->league->get_league_by_id($this->db_con, $league_id))
-		{
-			$this->view_data['league'] = $league;
-			$this->view_data['teams'] = $this->team->get_teams_by_league_id($this->db_con, $league_id);
-			$this->view('teams/multiple', $this->view_data);
-		}
-		else
-		{
-			$this->view_data['notice'] = "Competitie niet gevonden.";
-			$this->view('home/index', $this->view_data);
 		}
 	}
 
@@ -108,14 +88,14 @@ class teams extends Controller
 			else
 			{
 				$this->view_data['notice'] = "Competitie niet gevonden.";
-				$this->view_data['teams'] = $this->team->get_teams($this->db_con);
+				$this->view_data['teams'] = $this->team->get_teams_all_ordered_by_team_tag_asc($this->db_con);
 				$this->view('teams/multiple', $this->view_data);
 			}
 		}
 		else
 		{
 			$this->view_data['notice'] = "Ploeg niet gevonden.";
-			$this->view_data['teams'] = $this->team->get_teams($this->db_con);
+			$this->view_data['teams'] = $this->team->get_teams_all_ordered_by_team_tag_asc($this->db_con);
 			$this->view('teams/multiple', $this->view_data);
 		}
 	}

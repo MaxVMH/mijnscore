@@ -87,4 +87,25 @@ class Teams_Leagues
 		$query->execute();
 		return $query->fetchAll();
 	}
+
+	public function get_teams_by_league_id_ordered_by_team_tag_asc($db_con, $league_id)
+	{
+		$query = $db_con->prepare('
+		SELECT
+		teams.*,
+		tl.league_id as league_id
+		FROM
+		teams
+		INNER JOIN
+		teams_leagues tl
+		ON
+		teams.team_id=tl.team_id
+		AND
+		tl.league_id=:league_id
+		ORDER BY team_tag ASC
+		');
+		$query->bindValue(':league_id', $league_id, PDO::PARAM_STR);
+		$query->execute();
+		return $query->fetchAll();
+	}
 }

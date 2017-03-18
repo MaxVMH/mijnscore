@@ -28,7 +28,7 @@ class teams_admin extends Controller
 		}
 		else
 		{
-			$this->view_data['teams'] = $this->team->get_teams($this->db_con);
+			$this->view_data['teams'] = $this->team->get_teams_all($this->db_con);
 			$this->view('teams/multiple', $this->view_data);
 		}
 	}
@@ -110,7 +110,7 @@ class teams_admin extends Controller
 				{
 					$this->teams_leagues->set_team_league($this->db_con, $team_id, $league_id);
 				}
-				
+
 				if(!empty($_POST['remove_league_id']))
 				{
 					foreach($_POST['remove_league_id'] as $league_id)

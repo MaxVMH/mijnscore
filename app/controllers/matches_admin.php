@@ -49,7 +49,7 @@ class matches_admin extends Controller
 		}
 		elseif(isset($_POST['create']))
 		{
-			$this->view_data['teams'] = $this->teams_leagues->get_teams_by_league_id($this->db_con, $league_id);
+			$this->view_data['teams'] = $this->teams_leagues->get_teams_by_league_id_ordered_by_team_tag_asc($this->db_con, $league_id);
 			$this->view_data['leagues'] = $this->league->get_leagues_all($this->db_con);
 
 			if(empty($_POST['home_team_id']))
@@ -90,7 +90,7 @@ class matches_admin extends Controller
 		}
 		else
 		{
-			$this->view_data['teams'] = $this->teams_leagues->get_teams_by_league_id($this->db_con, $league_id);
+			$this->view_data['teams'] = $this->teams_leagues->get_teams_by_league_id_ordered_by_team_tag_asc($this->db_con, $league_id);
 			$this->view_data['leagues'] = $this->league->get_leagues_all($this->db_con);
 			$this->view('matches/forms/create', $this->view_data);
 		}
@@ -127,7 +127,7 @@ class matches_admin extends Controller
 			{
 				$this->view_data['league'] = $league;
 				$this->view_data['playday'] = $playday;
-				$this->view_data['teams'] = $this->teams_leagues->get_teams_by_league_id($this->db_con, $league_id);
+				$this->view_data['teams'] = $this->teams_leagues->get_teams_by_league_id_ordered_by_team_tag_asc($this->db_con, $league_id);
 
 				if(!isset($_POST['create_multiple']))
 				{
@@ -204,7 +204,7 @@ class matches_admin extends Controller
 		elseif($match = $this->match->get_match_by_id($this->db_con, $match_id))
 		{
 			$this->view_data['match'] = $match;
-			$this->view_data['teams'] = $this->team->get_teams_all($this->db_con);
+			$this->view_data['teams'] = $this->team->get_teams_all_ordered_by_team_tag_asc($this->db_con);
 			$this->view_data['leagues'] = $this->league->get_leagues_all($this->db_con);
 
 			if(!isset($_POST['edit']))
@@ -234,7 +234,7 @@ class matches_admin extends Controller
 			}
 			else
 			{
-				$data['teams'] = $this->team->get_teams_all($this->db_con);
+				$data['teams'] = $this->team->get_teams_all_ordered_by_team_tag_asc($this->db_con);
 				$this->view_data['notice'] = "Er is iets fout gegaan tijdens het bijwerken van de wedstrijd.";
 				$this->view('matches/forms/edit', $this->view_data);
 			}
@@ -361,7 +361,7 @@ class matches_admin extends Controller
 			{
 				$this->view_data['notice'] = "Wedstrijden niet gevonden";
 				$this->view_data['playday'] = $league_playday;
-				$this->view_data['teams'] = $this->teams_leagues->get_teams_by_league_id($this->db_con, $league_id);
+				$this->view_data['teams'] = $this->teams_leagues->get_teams_by_league_id_ordered_by_team_tag_asc($this->db_con, $league_id);
 				$this->view('matches/forms/create_multiple', $this->view_data);
 			}
 		}
