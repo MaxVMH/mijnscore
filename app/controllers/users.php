@@ -36,6 +36,7 @@ class users extends Controller
 		elseif(!empty($_POST['username']) && $profile_user = $this->user->get_user_by_username($this->db_con, $_POST['username']))
 		{
 			$this->view_data['profile'] = $profile_user;
+			$this->view_data['prediction_points'] = $this->prediction_points->get_prediction_points_by_user_id($this->db_con, $profile_user['user_id']);
 			$this->view('users/profile', $this->view_data);
 		}
 		else
