@@ -220,7 +220,7 @@ class users extends Controller
 				$this->view('home/index', $this->view_data);
 			}
 		}
-		elseif(empty($email_hash) && !empty($this->user_loggedin['user_email_verification_hash']))
+		elseif(empty($email_hash) && !empty($this->user_loggedin['user_email_verification_hash']) && $this->user_loggedin['user_email_verification'] != 1)
 		{
 			// check when last verification e-mail was sent, then send new or deny
 			$user_email_verification_hash_datetime = new DateTime($this->user_loggedin['user_email_verification_hash_datetime']);
@@ -237,7 +237,7 @@ class users extends Controller
 				$this->view('home/index', $this->view_data);
 			}
 		}
-		elseif($email_hash == $this->user_loggedin['user_email_verification_hash'])
+		elseif($email_hash == $this->user_loggedin['user_email_verification_hash'] && $this->user_loggedin['user_email_verification'] != 1)
 		{
 			// e-mail verification correct
 			$this->user->set_user_email_verification($this->db_con, $this->user_loggedin['user_id'], 1);
