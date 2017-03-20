@@ -11,7 +11,6 @@ Mocht het fout lopen, kan je een <a href="https://github.com/MaxVMH/mijnscore/">
 <br />
 <br />
 v0.1.1: e-mail herinneringen<br />
-v0.1.0: play-offs scoreberekening<br />
 <?php
 require_once '../app/views/footer.php';
 ?>
