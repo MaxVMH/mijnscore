@@ -49,7 +49,7 @@ foreach($inactive_users as $inactive_user)
   $inactive_user_predictions_points = $query->fetchAll();
   foreach($inactive_user_predictions_points as $inactive_user_prediction_points)
   {
-    echo "Pronostiek punten gevonden van " . $inactive_user['user_username'] . " (competitie " . $inactive_user_prediction_points['league_id'] . " speeldag " . $inactive_user_prediction_points['league_playday'] . ").<br />";
+    echo "Pronostiek punten gevonden van " . $inactive_user['user_username'] . " (competitie " . $inactive_user_prediction_points['league_id'] . " speeldag " . $inactive_user_prediction_points['league_matchday'] . ").<br />";
   }
   $query = $db_con->prepare("DELETE FROM predictions_points WHERE user_id=:user_id");
   $query->bindValue(':user_id', $inactive_user['user_id'], PDO::PARAM_STR);

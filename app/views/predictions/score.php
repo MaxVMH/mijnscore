@@ -2,39 +2,39 @@
 require_once '../app/views/header.php';
 ?>
 
-<h3>Scorebord <?= $data['score_league']['league_name']; ?>: <a href="predictions/score/<?= $data['score_league']['league_id']; ?>">eindklassement</a> / <a href="predictions/score/<?= $data['score_league']['league_id']; ?>/<?= $data['score_league']['league_playday_current']; ?>">per speeldag</a> / <a href="teams/score/<?= $data['score_league']['league_id']; ?>">ploegen</a></h3>
+<h3>Scorebord <?= $data['score_league']['league_name']; ?>: <a href="predictions/score/<?= $data['score_league']['league_id']; ?>">eindklassement</a> / <a href="predictions/score/<?= $data['score_league']['league_id']; ?>/<?= $data['score_league']['league_matchday_current']; ?>">per speeldag</a> / <a href="teams/score/<?= $data['score_league']['league_id']; ?>">ploegen</a></h3>
 
 <table>
 
 	<?php
-	if($data['score_playday'] != 0)
+	if($data['score_matchday'] != 0)
 	{
 
-		$score_playday_previous = $data['score_playday'] - 1;
-		$score_playday_next = $data['score_playday'] + 1;
+		$score_matchday_previous = $data['score_matchday'] - 1;
+		$score_matchday_next = $data['score_matchday'] + 1;
 
-		if($data['score_playday'] <= 1)
+		if($data['score_matchday'] <= 1)
 		{
-			$score_playday_previous = 1;
+			$score_matchday_previous = 1;
 		}
 
-		if($data['score_playday'] >= $data['score_league']['league_playday_current'])
+		if($data['score_matchday'] >= $data['score_league']['league_matchday_current'])
 		{
-			$score_playday_next = $data['score_league']['league_playday_current'];
+			$score_matchday_next = $data['score_league']['league_matchday_current'];
 		}
 
-		if($data['score_playday'] > $data['score_league']['league_playday_current'])
+		if($data['score_matchday'] > $data['score_league']['league_matchday_current'])
 		{
-			$score_playday_previous = $data['score_league']['league_playday_current'];
+			$score_matchday_previous = $data['score_league']['league_matchday_current'];
 		}
 		?>
 		<tr>
 			<th colspan="3">
-				<div style="float: left; text-align: left"><a href="predictions/score/<?= $data['score_league']['league_id']; ?>/<?= $score_playday_previous; ?>" class="align-left">(vorige speeldag)</a></div>
+				<div style="float: left; text-align: left"><a href="predictions/score/<?= $data['score_league']['league_id']; ?>/<?= $score_matchday_previous; ?>" class="align-left">(vorige speeldag)</a></div>
 				&nbsp; &nbsp;
-				Speeldag <?= $data['score_playday']; ?>
+				Speeldag <?= $data['score_matchday']; ?>
 				&nbsp; &nbsp;
-				<div style="float: right; text-align: right"><a href="predictions/score/<?= $data['score_league']['league_id']; ?>/<?= $score_playday_next; ?>">(volgende speeldag)</a></div>
+				<div style="float: right; text-align: right"><a href="predictions/score/<?= $data['score_league']['league_id']; ?>/<?= $score_matchday_next; ?>">(volgende speeldag)</a></div>
 			</th>
 		</tr>
 
@@ -70,35 +70,35 @@ foreach($data['users'] as $user)
 			<?php
 			if($user['league_user_ranking'] == 1)
 			{
-				if($data['score_playday'] == 0)
+				if($data['score_matchday'] == 0)
 				{
 					echo "<img src=\"img/league_gold.png\" height=\"50%\" />";
 				}
 				else
 				{
-					echo "<img src=\"img/playday_gold.png\" height=\"50%\" />";
+					echo "<img src=\"img/matchday_gold.png\" height=\"50%\" />";
 				}
 			}
 			elseif($user['league_user_ranking'] == 2)
 			{
-				if($data['score_playday'] == 0)
+				if($data['score_matchday'] == 0)
 				{
 					echo "<img src=\"img/league_silver.png\" height=\"40%\" />";
 				}
 				else
 				{
-					echo "<img src=\"img/playday_silver.png\" height=\"40%\" />";
+					echo "<img src=\"img/matchday_silver.png\" height=\"40%\" />";
 				}
 			}
 			elseif($user['league_user_ranking'] == 3)
 			{
-				if($data['score_playday'] == 0)
+				if($data['score_matchday'] == 0)
 				{
 					echo "<img src=\"img/league_bronze.png\" height=\"30%\" />";
 				}
 				else
 				{
-					echo "<img src=\"img/playday_bronze.png\" height=\"30%\" />";
+					echo "<img src=\"img/matchday_bronze.png\" height=\"30%\" />";
 				}
 			}
 			else
@@ -109,7 +109,7 @@ foreach($data['users'] as $user)
 			?>
 		</td>
 		<td><a href="users/profile/<?= $user['user_id']; ?>"><?= $user['user_username']; ?></a></td>
-		<td><a href="predictions/index/<?= $data['score_league']['league_id']; ?>/<?= $data['score_playday']; ?>/<?= $user['user_id']; ?>"><?= $user['points_amount']; ?></a></td>
+		<td><a href="predictions/index/<?= $data['score_league']['league_id']; ?>/<?= $data['score_matchday']; ?>/<?= $user['user_id']; ?>"><?= $user['points_amount']; ?></a></td>
 	</tr>
 	<?php
 }

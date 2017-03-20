@@ -20,7 +20,7 @@ if($data['match']['match_status']<5)
 		<th colspan="2"><?= $data['match']['home_team_tag']; ?> &nbsp; <?= $match_score; ?> &nbsp; <?= $data['match']['away_team_tag']; ?></th>
 	</tr>
 	<tr>
-		<td colspan="2"><?= $data['league']['league_name']; ?> Speeldag <?= $data['match']['league_playday']; ?></td>
+		<td colspan="2"><?= $data['league']['league_name']; ?> Speeldag <?= $data['match']['league_matchday']; ?></td>
 	</tr>
 	<tr>
 		<td>Thuisploeg</td>

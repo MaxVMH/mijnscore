@@ -26,7 +26,7 @@ require_once '../app/views/header.php';
         ?>
         <?= $points['league_user_ranking']; ?>e in <a href="predictions/score/<?= $points['league_id']; ?>"><?= $points['league_name']; ?></a><br />
 
-        <a href="predictions/index/<?= $points['league_id']; ?>/<?= $points['league_playday_current']; ?>/<?= $data['profile']['user_id']; ?>">Bekijk pronostiek</a><br />
+        <a href="predictions/index/<?= $points['league_id']; ?>/<?= $points['league_matchday_current']; ?>/<?= $data['profile']['user_id']; ?>">Bekijk pronostiek</a><br />
 
         <?php
       }

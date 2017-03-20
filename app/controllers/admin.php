@@ -82,9 +82,9 @@ class admin extends Controller
 		{
 			$this->prediction_points->set_prediction_points_by_league_id($this->db_con, $league['league_id']);
 			$this->view_data['notice'] = "Pronostiek punten geüpdatet.";
-			$this->view_data['users'] = $this->prediction_points->get_users_and_points_by_league_id_and_playday($this->db_con, $league['league_id'], 0);
+			$this->view_data['users'] = $this->prediction_points->get_users_and_points_by_league_id_and_matchday($this->db_con, $league['league_id'], 0);
 			$this->view_data['score_league'] = $league;
-			$this->view_data['score_playday'] = 0;
+			$this->view_data['score_matchday'] = 0;
 			$this->view('predictions/score', $this->view_data);
 		}
 		else

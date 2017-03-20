@@ -13,7 +13,7 @@ require_once '../app/views/header.php';
 	</tr>
 
 	<?php
-	$playday_prediction_score_counter = "0";
+	$matchday_prediction_score_counter = "0";
 
 	foreach($data['matches'] as $match)
 	{

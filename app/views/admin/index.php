@@ -16,7 +16,7 @@ foreach($data['leagues'] as $league)
 
 	<table>
 		<tr>
-			<th colspan="4"><?= $league['league_name']; ?> (speeldag <?= $league['league_playday_current']; ?> van <?= $league['league_playday_total']; ?>)</th>
+			<th colspan="4"><?= $league['league_name']; ?> (speeldag <?= $league['league_matchday_current']; ?> van <?= $league['league_matchday_total']; ?>)</th>
 		</tr>
 		<tr>
 			<th>Competitie</th>

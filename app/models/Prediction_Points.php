@@ -8,7 +8,7 @@ class Prediction_Points
 		SELECT
 		p_p.*,
 		l.league_name,
-		l.league_playday_current
+		l.league_matchday_current
 		FROM
 		predictions_points p_p
 		INNER JOIN
@@ -16,7 +16,7 @@ class Prediction_Points
 		ON
 		p_p.league_id = l.league_id
 		WHERE
-		p_p.user_id = :user_id AND p_p.league_playday = 0
+		p_p.user_id = :user_id AND p_p.league_matchday = 0
 		ORDER BY
 		l.league_id ASC
 		');
@@ -27,7 +27,7 @@ class Prediction_Points
 		return $result;
 	}
 
-	public function get_users_and_points_by_league_id_and_playday($db_con, $league_id, $league_playday)
+	public function get_users_and_points_by_league_id_and_matchday($db_con, $league_id, $league_matchday)
 	{
 		$result = false;
 
@@ -41,13 +41,13 @@ class Prediction_Points
 		INNER JOIN
 		predictions_points p_p
 		ON
-		u.user_id = p_p.user_id AND p_p.league_id = :league_id AND p_p.league_playday = :league_playday
+		u.user_id = p_p.user_id AND p_p.league_id = :league_id AND p_p.league_matchday = :league_matchday
 		ORDER BY
 		p_p.league_user_ranking
 		ASC
 		');
 		$query->bindValue(':league_id', $league_id, PDO::PARAM_STR);
-		$query->bindValue(':league_playday', $league_playday, PDO::PARAM_STR);
+		$query->bindValue(':league_matchday', $league_matchday, PDO::PARAM_STR);
 		$query->execute();
 		$result = $query->fetchAll();
 
@@ -58,7 +58,7 @@ class Prediction_Points
 	public function set_prediction_points_by_league_id($db_con, $league_id)
 	{
 		// select the matches that have a score but have not yet been calculated
-		$query = $db_con->prepare('SELECT * FROM matches WHERE league_id=:league_id AND match_status=4 ORDER BY league_playday');
+		$query = $db_con->prepare('SELECT * FROM matches WHERE league_id=:league_id AND match_status=4 ORDER BY league_matchday');
 		$query->bindValue(':league_id', $league_id, PDO::PARAM_STR);
 		$query->execute();
 		$matches = $query->fetchAll();
@@ -88,12 +88,12 @@ class Prediction_Points
 			$query->execute();
 		}
 
-		$this->set_playday_prediction_points_by_league_id($db_con, $league_id);
+		$this->set_matchday_prediction_points_by_league_id($db_con, $league_id);
 		$this->set_user_ranking_by_league_id($db_con, $league_id);
 	}
 
-	// this method selects matches and predictions, calculates playday totals and updates the database
-	public function set_playday_prediction_points_by_league_id($db_con, $league_id)
+	// this method selects matches and predictions, calculates matchday totals and updates the database
+	public function set_matchday_prediction_points_by_league_id($db_con, $league_id)
 	{
 		// if the league has a parent league, we have to add half of the points of the parent league
 		$query = $db_con->prepare('SELECT * FROM leagues WHERE league_id=:league_id');
@@ -110,7 +110,7 @@ class Prediction_Points
 		}
 
 		// select the matches that have been calculated
-		$query = $db_con->prepare('SELECT * FROM matches WHERE league_id=:league_id AND match_status=3 ORDER BY league_playday');
+		$query = $db_con->prepare('SELECT * FROM matches WHERE league_id=:league_id AND match_status=3 ORDER BY league_matchday');
 		$query->bindValue(':league_id', $league_id, PDO::PARAM_STR);
 		$query->execute();
 		$matches = $query->fetchAll();
@@ -123,33 +123,33 @@ class Prediction_Points
 			$query->execute();
 			$predictions = $query->fetchAll();
 
-			// calculate the points per playday and collect it in array $predictions_points
-			// playday 0 is the league total
+			// calculate the points per matchday and collect it in array $predictions_points
+			// matchday 0 is the league total
 			foreach($predictions as $prediction)
 			{
 				if(empty($predictions_points[$prediction['user_id']][0]))
 				{
 					$predictions_points[$prediction['user_id']][0] = 0;
 				}
-				if(empty($predictions_points[$prediction['user_id']][$match['league_playday']]))
+				if(empty($predictions_points[$prediction['user_id']][$match['league_matchday']]))
 				{
-					$predictions_points[$prediction['user_id']][$match['league_playday']] = 0;
+					$predictions_points[$prediction['user_id']][$match['league_matchday']] = 0;
 				}
 				$predictions_points[$prediction['user_id']][0] = $predictions_points[$prediction['user_id']][0] + $prediction['prediction_points'];
-				$predictions_points[$prediction['user_id']][$match['league_playday']] = $predictions_points[$prediction['user_id']][$match['league_playday']] + $prediction['prediction_points'];
+				$predictions_points[$prediction['user_id']][$match['league_matchday']] = $predictions_points[$prediction['user_id']][$match['league_matchday']] + $prediction['prediction_points'];
 			}
 		}
 
 		// put the points in the database
-		foreach($predictions_points as $user_id => $points_playdays)
+		foreach($predictions_points as $user_id => $points_matchdays)
 		{
-			foreach($points_playdays as $league_playday => $points_amount)
+			foreach($points_matchdays as $league_matchday => $points_amount)
 			{
 				$parent_league_points_amount = 0;
 
 				if(!empty($parent_league))
 				{
-					$query = $db_con->prepare('SELECT * FROM predictions_points WHERE user_id=:user_id AND league_id=:league_id AND league_playday=0');
+					$query = $db_con->prepare('SELECT * FROM predictions_points WHERE user_id=:user_id AND league_id=:league_id AND league_matchday=0');
 					$query->bindValue(':user_id', $user_id, PDO::PARAM_STR);
 					$query->bindValue(':league_id', $parent_league['league_id'], PDO::PARAM_STR);
 					$query->execute();
@@ -158,10 +158,10 @@ class Prediction_Points
 				}
 				$points_corrected_amount = $points_amount + ($parent_league_points_amount);
 
-				$query = $db_con->prepare('SELECT * FROM predictions_points WHERE user_id=:user_id AND league_id=:league_id AND league_playday=:league_playday');
+				$query = $db_con->prepare('SELECT * FROM predictions_points WHERE user_id=:user_id AND league_id=:league_id AND league_matchday=:league_matchday');
 				$query->bindValue(':user_id', $user_id, PDO::PARAM_STR);
 				$query->bindValue(':league_id', $league_id, PDO::PARAM_STR);
-				$query->bindValue(':league_playday', $league_playday, PDO::PARAM_STR);
+				$query->bindValue(':league_matchday', $league_matchday, PDO::PARAM_STR);
 				$query->execute();
 
 				if($points = $query->fetch())
@@ -176,9 +176,9 @@ class Prediction_Points
 				}
 				else
 				{
-					$query = $db_con->prepare('INSERT INTO predictions_points(league_id, league_playday, user_id, points_amount) VALUES(:league_id, :league_playday, :user_id, :points_amount)');
+					$query = $db_con->prepare('INSERT INTO predictions_points(league_id, league_matchday, user_id, points_amount) VALUES(:league_id, :league_matchday, :user_id, :points_amount)');
 					$query->bindValue(':league_id', $league_id, PDO::PARAM_STR);
-					$query->bindValue(':league_playday', $league_playday, PDO::PARAM_STR);
+					$query->bindValue(':league_matchday', $league_matchday, PDO::PARAM_STR);
 					$query->bindValue(':user_id', $user_id, PDO::PARAM_STR);
 					$query->bindValue(':points_amount', $points_corrected_amount, PDO::PARAM_STR);
 					$query->execute();
@@ -189,26 +189,26 @@ class Prediction_Points
 
 	public function set_user_ranking_by_league_id($db_con, $league_id)
 	{
-		$query = $db_con->prepare('SELECT * FROM predictions_points WHERE league_id=:league_id AND league_playday>0 ORDER BY league_playday ASC, points_amount DESC');
+		$query = $db_con->prepare('SELECT * FROM predictions_points WHERE league_id=:league_id AND league_matchday>0 ORDER BY league_matchday ASC, points_amount DESC');
 		$query->bindValue(':league_id', $league_id, PDO::PARAM_STR);
 		$query->execute();
 		$predictions_points = $query->fetchAll();
 
 		$ranking = 0;
 		$ranking_share = 0;
-		$previous_playday = 0;
+		$previous_matchday = 0;
 		$previous_points = 0;
 		$previous_ranking_corrected = 0;
 
 		foreach($predictions_points as $points)
 		{
 			// if someone has the same amount of points in the ranking and they are in the top 3, they share their place
-			if($points['points_amount'] == $previous_points && ($previous_ranking_corrected == 1 || $previous_ranking_corrected == 2 || $previous_ranking_corrected == 3) && $previous_playday == $points['league_playday'])
+			if($points['points_amount'] == $previous_points && ($previous_ranking_corrected == 1 || $previous_ranking_corrected == 2 || $previous_ranking_corrected == 3) && $previous_matchday == $points['league_matchday'])
 			{
 				$ranking_share = $previous_ranking_corrected;
 				$ranking = $ranking + 1;
 			}
-			elseif($previous_playday != $points['league_playday'])
+			elseif($previous_matchday != $points['league_matchday'])
 			{
 				$ranking = 1;
 			}
@@ -234,7 +234,7 @@ class Prediction_Points
 				$query->execute();
 			}
 
-			$previous_playday = $points['league_playday'];
+			$previous_matchday = $points['league_matchday'];
 			$previous_points = $points['points_amount'];
 			$previous_ranking_corrected = $ranking_corrected;
 			$ranking_share = 0;
@@ -251,7 +251,7 @@ class Prediction_Points
 		) AS correctpredictions_count
 		FROM
 		predictions_points p_p
-		WHERE p_p.league_id=:league_id AND p_p.league_playday=0
+		WHERE p_p.league_id=:league_id AND p_p.league_matchday=0
 		ORDER BY p_p.points_amount DESC, correctpredictions_count DESC');
 		$query->bindValue(':league_id', $league_id, PDO::PARAM_STR);
 		$query->execute();

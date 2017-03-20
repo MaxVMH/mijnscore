@@ -2,7 +2,7 @@
 require_once '../app/views/header.php';
 ?>
 
-<h3>Scorebord <?= $data['league']['league_name']; ?>: <a href="predictions/score/<?= $data['league']['league_id']; ?>">eindklassement</a> / <a href="predictions/score/<?= $data['league']['league_id']; ?>/<?= $data['league']['league_playday_current']; ?>">per speeldag</a> / <a href="teams/score/<?= $data['league']['league_id']; ?>">ploegen</a></h3>
+<h3>Scorebord <?= $data['league']['league_name']; ?>: <a href="predictions/score/<?= $data['league']['league_id']; ?>">eindklassement</a> / <a href="predictions/score/<?= $data['league']['league_id']; ?>/<?= $data['league']['league_matchday_current']; ?>">per speeldag</a> / <a href="teams/score/<?= $data['league']['league_id']; ?>">ploegen</a></h3>
 
 <table>
 	<tr>

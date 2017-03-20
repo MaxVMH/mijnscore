@@ -218,7 +218,7 @@ class Prediction
 		return $query->fetchAll();
 	}
 
-	public function get_predictions_by_league_id_and_user_id_and_playday($db_con, $league_id, $user_id, $playday)
+	public function get_predictions_by_league_id_and_user_id_and_matchday($db_con, $league_id, $user_id, $matchday)
 	{
 		$query = $db_con->prepare('
 		SELECT
@@ -250,17 +250,17 @@ class Prediction
 		ON
 		matches.match_id = predictions.match_id
 
-		WHERE matches.league_id=:league_id AND matches.league_playday=:playday AND predictions.user_id=:user_id
+		WHERE matches.league_id=:league_id AND matches.league_matchday=:matchday AND predictions.user_id=:user_id
 		ORDER BY match_datetime ASC
 		');
 		$query->bindValue('league_id', $league_id, PDO::PARAM_STR);
 		$query->bindValue('user_id', $user_id, PDO::PARAM_STR);
-		$query->bindValue('playday', $playday, PDO::PARAM_STR);
+		$query->bindValue('matchday', $matchday, PDO::PARAM_STR);
 		$query->execute();
 		return $query->fetchAll();
 	}
 
-	public function get_matches_with_predictions_by_league_id_and_user_id_and_playday($db_con, $league_id, $user_id, $playday)
+	public function get_matches_with_predictions_by_league_id_and_user_id_and_matchday($db_con, $league_id, $user_id, $matchday)
 	{
 		$query = $db_con->prepare('
 		SELECT
@@ -293,12 +293,12 @@ class Prediction
 		matches.match_id = predictions.match_id
 		AND predictions.user_id=:user_id
 
-		WHERE matches.league_id=:league_id AND matches.league_playday=:playday
+		WHERE matches.league_id=:league_id AND matches.league_matchday=:matchday
 		ORDER BY match_datetime, match_id
 		');
 		$query->bindValue('league_id', $league_id, PDO::PARAM_STR);
 		$query->bindValue('user_id', $user_id, PDO::PARAM_STR);
-		$query->bindValue('playday', $playday, PDO::PARAM_STR);
+		$query->bindValue('matchday', $matchday, PDO::PARAM_STR);
 		$query->execute();
 		return $query->fetchAll();
 	}

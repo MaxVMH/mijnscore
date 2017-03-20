@@ -20,11 +20,11 @@ class predictions extends Controller
 		$this->view_data['leagues_current'] = $this->league->get_leagues_by_status($this->db_con, 1);
 
 		$this->match->set_matches_status_auto($this->db_con);
-		$this->league->set_leagues_playday_auto($this->db_con);
+		$this->league->set_leagues_matchday_auto($this->db_con);
 		$this->league->set_leagues_status_auto($this->db_con);
 	}
 
-	public function index($league_id='1', $playday='', $user_id='')
+	public function index($league_id='1', $matchday='', $user_id='')
 	{
 		if($this->user_loggedin == false)
 		{
@@ -35,21 +35,21 @@ class predictions extends Controller
 		{
 			$this->view_data['league'] = $league;
 
-			if(empty($playday))
+			if(empty($matchday))
 			{
-				$playday = $league['league_playday_current'];
+				$matchday = $league['league_matchday_current'];
 			}
 
-			if($playday == "0")
+			if($matchday == "0")
 			{
-				$playday = $league['league_playday_current'] + 1;
+				$matchday = $league['league_matchday_current'] + 1;
 			}
 
 			if($user = $this->user->get_user_by_id($this->db_con, $user_id))
 			{
 				$this->view_data['user'] = $user;
 
-				if($predictions = $this->prediction->get_matches_with_predictions_by_league_id_and_user_id_and_playday($this->db_con, $league_id, $user['user_id'], $playday))
+				if($predictions = $this->prediction->get_matches_with_predictions_by_league_id_and_user_id_and_matchday($this->db_con, $league_id, $user['user_id'], $matchday))
 				{
 					$this->view_data['predictions'] = $predictions;
 					$this->view('predictions/view', $this->view_data);
@@ -60,9 +60,9 @@ class predictions extends Controller
 					$this->view('home/index', $this->view_data);
 				}
 			}
-			elseif($playday < $league['league_playday_current'] || $league['league_status'] < 1)
+			elseif($matchday < $league['league_matchday_current'] || $league['league_status'] < 1)
 			{
-				if($predictions = $this->prediction->get_matches_with_predictions_by_league_id_and_user_id_and_playday($this->db_con, $league_id, $this->user_loggedin['user_id'], $playday))
+				if($predictions = $this->prediction->get_matches_with_predictions_by_league_id_and_user_id_and_matchday($this->db_con, $league_id, $this->user_loggedin['user_id'], $matchday))
 				{
 					$this->view_data['predictions'] = $predictions;
 					$this->view('predictions/view', $this->view_data);
@@ -73,9 +73,9 @@ class predictions extends Controller
 					$this->view('home/index', $this->view_data);
 				}
 			}
-			elseif($playday >= $league['league_playday_current'])
+			elseif($matchday >= $league['league_matchday_current'])
 			{
-				if($predictions = $this->prediction->get_predictions_by_league_id_and_user_id_and_playday($this->db_con, $league_id, $this->user_loggedin['user_id'], $playday))
+				if($predictions = $this->prediction->get_predictions_by_league_id_and_user_id_and_matchday($this->db_con, $league_id, $this->user_loggedin['user_id'], $matchday))
 				{
 					$predictions_editable = FALSE;
 					foreach($predictions as $prediction)
@@ -88,17 +88,17 @@ class predictions extends Controller
 
 					if($predictions_editable == TRUE)
 					{
-						$this->view_data['matches'] = $this->prediction->get_matches_with_predictions_by_league_id_and_user_id_and_playday($this->db_con, $league_id, $this->user_loggedin['user_id'], $playday);
+						$this->view_data['matches'] = $this->prediction->get_matches_with_predictions_by_league_id_and_user_id_and_matchday($this->db_con, $league_id, $this->user_loggedin['user_id'], $matchday);
 						$this->view('predictions/forms/edit', $this->view_data);
 					}
 					else
 					{
-						$this->view_data['predictions'] = $this->prediction->get_matches_with_predictions_by_league_id_and_user_id_and_playday($this->db_con, $league_id, $this->user_loggedin['user_id'], $playday);
+						$this->view_data['predictions'] = $this->prediction->get_matches_with_predictions_by_league_id_and_user_id_and_matchday($this->db_con, $league_id, $this->user_loggedin['user_id'], $matchday);
 						$this->view('predictions/view', $this->view_data);
 					}
 
 				}
-				elseif($matches = $this->match->get_matches_by_league_id_and_playday($this->db_con, $league_id, $playday))
+				elseif($matches = $this->match->get_matches_by_league_id_and_matchday($this->db_con, $league_id, $matchday))
 				{
 					$predictions_creatable = FALSE;
 					foreach($matches as $match)
@@ -116,7 +116,7 @@ class predictions extends Controller
 					}
 					else
 					{
-						$this->view_data['predictions'] = $this->prediction->get_matches_with_predictions_by_league_id_and_user_id_and_playday($this->db_con, $league_id, $this->user_loggedin['user_id'], $playday);
+						$this->view_data['predictions'] = $this->prediction->get_matches_with_predictions_by_league_id_and_user_id_and_matchday($this->db_con, $league_id, $this->user_loggedin['user_id'], $matchday);
 						$this->view('predictions/view', $this->view_data);
 					}
 				}
@@ -139,7 +139,7 @@ class predictions extends Controller
 		}
 	}
 
-	public function score($league_id=1, $playday=0)
+	public function score($league_id=1, $matchday=0)
 	{
 		if($this->user_loggedin == false)
 		{
@@ -148,9 +148,9 @@ class predictions extends Controller
 		}
 		elseif($league = $this->league->get_league_by_id($this->db_con, $league_id))
 		{
-			$this->view_data['users'] = $this->prediction_points->get_users_and_points_by_league_id_and_playday($this->db_con, $league_id, $playday);
+			$this->view_data['users'] = $this->prediction_points->get_users_and_points_by_league_id_and_matchday($this->db_con, $league_id, $matchday);
 			$this->view_data['score_league'] = $league;
-			$this->view_data['score_playday'] = $playday;
+			$this->view_data['score_matchday'] = $matchday;
 			$this->view('predictions/score', $this->view_data);
 		}
 		else
@@ -160,7 +160,7 @@ class predictions extends Controller
 		}
 	}
 
-	public function edit($league_id='', $playday='')
+	public function edit($league_id='', $matchday='')
 	{
 		if($this->user_loggedin == false)
 		{
@@ -172,15 +172,15 @@ class predictions extends Controller
 			$this->view_data['notice'] = "Competitie niet gevonden.";
 			$this->view('home/index', $this->view_data);
 		}
-		elseif($playday < $this->league->get_league_by_id($this->db_con, $league_id)['league_playday_current'])
+		elseif($matchday < $this->league->get_league_by_id($this->db_con, $league_id)['league_matchday_current'])
 		{
 			$this->view_data['notice'] = "Pronostiek niet bewerkbaar.";
 			$this->view('home/index', $this->view_data);
 		}
-		elseif($predictions = $this->prediction->get_predictions_by_league_id_and_user_id_and_playday($this->db_con, $league_id, $this->user_loggedin['user_id'], $playday))
+		elseif($predictions = $this->prediction->get_predictions_by_league_id_and_user_id_and_matchday($this->db_con, $league_id, $this->user_loggedin['user_id'], $matchday))
 		{
 			$this->view_data['league'] = $this->league->get_league_by_id($this->db_con, $league_id);
-			$this->view_data['matches'] = $this->prediction->get_matches_with_predictions_by_league_id_and_user_id_and_playday($this->db_con, $league_id, $this->user_loggedin['user_id'], $playday);
+			$this->view_data['matches'] = $this->prediction->get_matches_with_predictions_by_league_id_and_user_id_and_matchday($this->db_con, $league_id, $this->user_loggedin['user_id'], $matchday);
 
 			if(isset($_POST['edit']))
 			{
@@ -229,13 +229,13 @@ class predictions extends Controller
 					elseif($this->prediction->edit_predictions_by_user_id_and_prediction_ids($this->db_con, $this->user_loggedin['user_id'], $predictions_ids, $predictions_home_team_scores, $predictions_away_team_scores))
 					{
 						$this->view_data['notice'] = "Pronostiek bijgewerkt.";
-						$this->view_data['matches'] = $this->prediction->get_matches_with_predictions_by_league_id_and_user_id_and_playday($this->db_con, $league_id, $this->user_loggedin['user_id'], $playday);
+						$this->view_data['matches'] = $this->prediction->get_matches_with_predictions_by_league_id_and_user_id_and_matchday($this->db_con, $league_id, $this->user_loggedin['user_id'], $matchday);
 						$this->view('predictions/forms/edit', $this->view_data);
 					}
 					else
 					{
 						$this->view_data['notice'] = "Er is iets fout gelopen tijdens het bijwerken van de pronostiek.";
-						$this->view_data['matches'] = $this->prediction->get_matches_with_predictions_by_league_id_and_user_id_and_playday($this->db_con, $league_id, $this->user_loggedin['user_id'], $playday);
+						$this->view_data['matches'] = $this->prediction->get_matches_with_predictions_by_league_id_and_user_id_and_matchday($this->db_con, $league_id, $this->user_loggedin['user_id'], $matchday);
 						$this->view('predictions/forms/edit', $this->view_data);
 					}
 				}
@@ -252,7 +252,7 @@ class predictions extends Controller
 		}
 	}
 
-	public function create($league_id='', $playday='')
+	public function create($league_id='', $matchday='')
 	{
 		if($this->user_loggedin == false)
 		{
@@ -264,13 +264,13 @@ class predictions extends Controller
 			$this->view_data['notice'] = "Competitie niet gevonden.";
 			$this->view('home/index', $this->view_data);
 		}
-		elseif($predictions = $this->prediction->get_predictions_by_league_id_and_user_id_and_playday($this->db_con, $league_id, $this->user_loggedin['user_id'], $playday))
+		elseif($predictions = $this->prediction->get_predictions_by_league_id_and_user_id_and_matchday($this->db_con, $league_id, $this->user_loggedin['user_id'], $matchday))
 		{
 			$this->view_data['league'] = $this->league->get_league_by_id($this->db_con, $league_id);
-			$this->view_data['matches'] = $this->prediction->get_matches_with_predictions_by_league_id_and_user_id_and_playday($this->db_con, $league_id, $this->user_loggedin['user_id'], $playday);
+			$this->view_data['matches'] = $this->prediction->get_matches_with_predictions_by_league_id_and_user_id_and_matchday($this->db_con, $league_id, $this->user_loggedin['user_id'], $matchday);
 			$this->view('predictions/forms/edit', $this->view_data);
 		}
-		elseif($matches = $this->match->get_matches_by_league_id_and_playday($this->db_con, $league_id, $playday))
+		elseif($matches = $this->match->get_matches_by_league_id_and_matchday($this->db_con, $league_id, $matchday))
 		{
 			$this->view_data['league'] = $this->league->get_league_by_id($this->db_con, $league_id);
 
@@ -316,19 +316,19 @@ class predictions extends Controller
 					if(!empty($predictions_toolate))
 					{
 						$this->view_data['notice'] = "Minstens 1 pronostiek werd te laat ontvangen.";
-						$this->view_data['matches'] = $this->prediction->get_matches_with_predictions_by_league_id_and_user_id_and_playday($this->db_con, $league_id, $this->user_loggedin['user_id'], $playday);
+						$this->view_data['matches'] = $this->prediction->get_matches_with_predictions_by_league_id_and_user_id_and_matchday($this->db_con, $league_id, $this->user_loggedin['user_id'], $matchday);
 						$this->view('predictions/view', $this->view_data);
 					}
 					elseif($this->prediction->create_predictions($this->db_con, $predictions_match_ids, $this->user_loggedin['user_id'], $predictions_home_team_scores, $predictions_away_team_scores))
 					{
 						$this->view_data['notice'] = "Nieuwe pronostiek ontvangen.";
-						$this->view_data['matches'] = $this->prediction->get_matches_with_predictions_by_league_id_and_user_id_and_playday($this->db_con, $league_id, $this->user_loggedin['user_id'], $playday);
+						$this->view_data['matches'] = $this->prediction->get_matches_with_predictions_by_league_id_and_user_id_and_matchday($this->db_con, $league_id, $this->user_loggedin['user_id'], $matchday);
 						$this->view('predictions/forms/edit', $this->view_data);
 					}
 					else
 					{
 						$this->view_data['notice'] = "Er is iets fout gegaan tijdens het maken van de pronostiek.";
-						$this->view_data['predictions'] = $this->prediction->get_matches_with_predictions_by_league_id_and_user_id_and_playday($this->db_con, $league_id, $this->user_loggedin['user_id'], $playday);
+						$this->view_data['predictions'] = $this->prediction->get_matches_with_predictions_by_league_id_and_user_id_and_matchday($this->db_con, $league_id, $this->user_loggedin['user_id'], $matchday);
 						$this->view('predictions/view', $this->view_data);
 					}
 				}

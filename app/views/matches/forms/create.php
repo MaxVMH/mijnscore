@@ -33,7 +33,7 @@ require_once '../app/views/header.php';
 
 		<tr>
 			<td>Speeldag</td>
-			<td><select name="playday">
+			<td><select name="matchday">
 				<?php
 				foreach(range(1,30) as $i)
 				{

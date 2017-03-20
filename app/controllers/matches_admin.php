@@ -77,7 +77,7 @@ class matches_admin extends Controller
 				$this->view_data['notice'] = "Vul een competitie in.";
 				$this->view('matches/forms/create', $this->view_data);
 			}
-			elseif($this->match->create_match($this->db_con, $_POST['datetime'], $_POST['info'], $_POST['league'], $_POST['playday'], $_POST['home_team_id'], $_POST['away_team_id']))
+			elseif($this->match->create_match($this->db_con, $_POST['datetime'], $_POST['info'], $_POST['league'], $_POST['matchday'], $_POST['home_team_id'], $_POST['away_team_id']))
 			{
 				$this->view_data['notice'] = "Wedstrijd aangemaakt.";
 				$this->view('matches/forms/create', $this->view_data);
@@ -96,7 +96,7 @@ class matches_admin extends Controller
 		}
 	}
 
-	public function create_multiple($league_id='', $playday='')
+	public function create_multiple($league_id='', $matchday='')
 	{
 		if($this->user_loggedin['user_rank'] != 9)
 		{
@@ -105,20 +105,20 @@ class matches_admin extends Controller
 		}
 		elseif($league = $this->league->get_league_by_id($this->db_con, $league_id))
 		{
-			if(empty($playday))
+			if(empty($matchday))
 			{
 				if($league_last_match = $this->match->get_last_match_by_league_id($this->db_con, $league_id))
 				{
-					$playday = $league_last_match['league_playday'] + 1;
+					$matchday = $league_last_match['league_matchday'] + 1;
 				}
 			}
 
-			if($playday < $league['league_playday_current'])
+			if($matchday < $league['league_matchday_current'])
 			{
 				$this->view_data['notice'] = "Geen geldige speeldag gevonden, u kan geen wedstrijden toevoegen voor vorige speeldagen.";
 				$this->view('home/index', $this->view_data);
 			}
-			elseif($playday > $league['league_playday_total'])
+			elseif($matchday > $league['league_matchday_total'])
 			{
 				$this->view_data['notice'] = "Geen geldige speeldag gevonden, u kan geen wedstrijden toevoegen na de laatste speeldag.";
 				$this->view('home/index', $this->view_data);
@@ -126,7 +126,7 @@ class matches_admin extends Controller
 			else
 			{
 				$this->view_data['league'] = $league;
-				$this->view_data['playday'] = $playday;
+				$this->view_data['matchday'] = $matchday;
 				$this->view_data['teams'] = $this->teams_leagues->get_teams_by_league_id_ordered_by_team_tag_asc($this->db_con, $league_id);
 
 				if(!isset($_POST['create_multiple']))
@@ -158,7 +158,7 @@ class matches_admin extends Controller
 					{
 						if($this->team->get_team_by_id($this->db_con, $home_team_id) && $this->team->get_team_by_id($this->db_con, $matches_awayteams[$key]))
 						{
-							if($this->match->create_match($this->db_con, $matches_datetimes[$key], '', $league_id, $playday, $home_team_id, $matches_awayteams[$key]))
+							if($this->match->create_match($this->db_con, $matches_datetimes[$key], '', $league_id, $matchday, $home_team_id, $matches_awayteams[$key]))
 							{
 								$this->view_data['notice'] = "Wedstrijden toegevoegd. Gebruikers kunnen pronostieken indienen nadat u het bewerkingsformulier eenmalig indient.";
 								$matches_added = true;
@@ -177,7 +177,7 @@ class matches_admin extends Controller
 					}
 					if($matches_added == true)
 					{
-						$this->view_data['matches'] = $this->match->get_matches_by_league_id_and_playday($this->db_con, $league_id, $playday);
+						$this->view_data['matches'] = $this->match->get_matches_by_league_id_and_matchday($this->db_con, $league_id, $matchday);
 						$this->view('matches/forms/edit_multiple', $this->view_data);
 					}
 					else
@@ -226,7 +226,7 @@ class matches_admin extends Controller
 				$this->view_data['notice'] = "Vul een datum in.";
 				$this->view('matches/forms/edit', $this->view_data);
 			}
-			elseif($this->match->edit_match($this->db_con, $match_id, $_POST['status'], $_POST['datetime'], $_POST['info'], $_POST['league'], $_POST['playday'], $_POST['home_team_id'], $_POST['home_team_score'], $_POST['away_team_id'], $_POST['away_team_score']))
+			elseif($this->match->edit_match($this->db_con, $match_id, $_POST['status'], $_POST['datetime'], $_POST['info'], $_POST['league'], $_POST['matchday'], $_POST['home_team_id'], $_POST['home_team_score'], $_POST['away_team_id'], $_POST['away_team_score']))
 			{
 				$this->view_data['match'] = $this->match->get_match_by_id($this->db_con, $match_id);
 				$this->view_data['notice'] = "Wedstrijd bijgewerkt.";
@@ -246,7 +246,7 @@ class matches_admin extends Controller
 		}
 	}
 
-	public function edit_multiple($league_id=1, $league_playday='')
+	public function edit_multiple($league_id=1, $league_matchday='')
 	{
 		if($this->user_loggedin['user_rank'] != 9)
 		{
@@ -257,12 +257,12 @@ class matches_admin extends Controller
 		{
 			$this->view_data['league'] = $league;
 
-			if(empty($league_playday))
+			if(empty($league_matchday))
 			{
-				$league_playday = $league['league_playday_current'];
+				$league_matchday = $league['league_matchday_current'];
 			}
 
-			if($matches = $this->match->get_matches_by_league_id_and_playday($this->db_con, $league_id, $league_playday))
+			if($matches = $this->match->get_matches_by_league_id_and_matchday($this->db_con, $league_id, $league_matchday))
 			{
 				$this->view_data['matches'] = $matches;
 				if(isset($_POST['edit_multiple']))
@@ -349,7 +349,7 @@ class matches_admin extends Controller
 							}
 						}
 					}
-					$this->view_data['matches'] = $this->match->get_matches_by_league_id_and_playday($this->db_con, $league_id, $league_playday);
+					$this->view_data['matches'] = $this->match->get_matches_by_league_id_and_matchday($this->db_con, $league_id, $league_matchday);
 					$this->view('matches/forms/edit_multiple', $this->view_data);
 				}
 				else
@@ -360,7 +360,7 @@ class matches_admin extends Controller
 			else
 			{
 				$this->view_data['notice'] = "Wedstrijden niet gevonden";
-				$this->view_data['playday'] = $league_playday;
+				$this->view_data['matchday'] = $league_matchday;
 				$this->view_data['teams'] = $this->teams_leagues->get_teams_by_league_id_ordered_by_team_tag_asc($this->db_con, $league_id);
 				$this->view('matches/forms/create_multiple', $this->view_data);
 			}

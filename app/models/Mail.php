@@ -70,9 +70,9 @@ class Mail
 		$active_leagues = $query->fetchAll();
 		foreach($active_leagues as $active_league)
 		{
-			$query = $db_con->prepare('SELECT * FROM matches WHERE league_id=:league_id AND league_playday=:league_playday_current ORDER BY match_datetime ASC LIMIT 1');
+			$query = $db_con->prepare('SELECT * FROM matches WHERE league_id=:league_id AND league_matchday=:league_matchday_current ORDER BY match_datetime ASC LIMIT 1');
 			$query->bindValue(':league_id', $active_league['league_id'], PDO::PARAM_STR);
-			$query->bindValue(':league_playday_current', $active_league['league_playday_current'], PDO::PARAM_STR);
+			$query->bindValue(':league_matchday_current', $active_league['league_matchday_current'], PDO::PARAM_STR);
 			$query->execute();
 			$league_next_match = $query->fetch();
 

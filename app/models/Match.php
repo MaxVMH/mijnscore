@@ -1,19 +1,19 @@
 <?php
 class Match
 {
-	public function create_match($db_con, $datetime, $info, $league, $playday, $home, $away)
+	public function create_match($db_con, $datetime, $info, $league, $matchday, $home, $away)
 	{
-		$query = $db_con->prepare('INSERT INTO matches(match_status, match_datetime, match_info, league_id, league_playday, home_team_id, away_team_id) VALUES(9, :datetime, :info, :league, :playday, :home, :away)');
+		$query = $db_con->prepare('INSERT INTO matches(match_status, match_datetime, match_info, league_id, league_matchday, home_team_id, away_team_id) VALUES(9, :datetime, :info, :league, :matchday, :home, :away)');
 		$query->bindValue(':datetime', $datetime, PDO::PARAM_STR);
 		$query->bindValue(':info', $info, PDO::PARAM_STR);
 		$query->bindValue(':league', $league, PDO::PARAM_STR);
-		$query->bindValue(':playday', $playday, PDO::PARAM_STR);
+		$query->bindValue(':matchday', $matchday, PDO::PARAM_STR);
 		$query->bindValue(':home', $home, PDO::PARAM_STR);
 		$query->bindValue(':away', $away, PDO::PARAM_STR);
 		return $query->execute();
 	}
 
-	public function edit_match($db_con, $id, $status, $datetime, $info, $league, $playday, $home_team_id, $home_team_score, $away_team_id, $away_team_score)
+	public function edit_match($db_con, $id, $status, $datetime, $info, $league, $matchday, $home_team_id, $home_team_score, $away_team_id, $away_team_score)
 	{
 		$query = $db_con->prepare('
 		UPDATE matches
@@ -21,7 +21,7 @@ class Match
 		match_datetime=:datetime,
 		match_info=:info,
 		league_id=:league,
-		league_playday=:playday,
+		league_matchday=:matchday,
 		home_team_id=:home_team_id,
 		home_team_score=:home_team_score,
 		away_team_id=:away_team_id,
@@ -31,7 +31,7 @@ class Match
 		$query->bindValue('datetime', $datetime, PDO::PARAM_STR);
 		$query->bindValue('info', $info, PDO::PARAM_STR);
 		$query->bindValue('league', $league, PDO::PARAM_STR);
-		$query->bindValue('playday', $playday, PDO::PARAM_STR);
+		$query->bindValue('matchday', $matchday, PDO::PARAM_STR);
 		$query->bindValue('home_team_id', $home_team_id, PDO::PARAM_STR);
 		$query->bindValue('home_team_score', $home_team_score, PDO::PARAM_STR);
 		$query->bindValue('away_team_id', $away_team_id, PDO::PARAM_STR);
@@ -230,7 +230,7 @@ class Match
 		return $query->fetchAll();
 	}
 
-	public function get_matches_by_league_id_and_playday($db_con, $league_id, $playday)
+	public function get_matches_by_league_id_and_matchday($db_con, $league_id, $matchday)
 	{
 		$query = $db_con->prepare('
 		SELECT
@@ -254,10 +254,10 @@ class Match
 		leagues match_league
 		ON
 		matches.league_id = match_league.league_id
-		WHERE matches.league_id=:league_id AND matches.league_playday=:playday
+		WHERE matches.league_id=:league_id AND matches.league_matchday=:matchday
 		ORDER BY match_datetime ASC');
 		$query->bindValue(':league_id', $league_id, PDO::PARAM_STR);
-		$query->bindValue(':playday', $playday, PDO::PARAM_STR);
+		$query->bindValue(':matchday', $matchday, PDO::PARAM_STR);
 		$query->execute();
 		return $query->fetchAll();
 	}
@@ -298,7 +298,7 @@ class Match
 
 	public function get_last_match_by_league_id($db_con, $league_id)
 	{
-		$query = $db_con->prepare('SELECT * FROM matches WHERE league_id=:league_id ORDER BY league_playday DESC, match_datetime DESC LIMIT 1');
+		$query = $db_con->prepare('SELECT * FROM matches WHERE league_id=:league_id ORDER BY league_matchday DESC, match_datetime DESC LIMIT 1');
 		$query->bindValue(':league_id', $league_id, PDO::PARAM_STR);
 		$query->execute();
 		return $query->fetch();

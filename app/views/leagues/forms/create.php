@@ -17,7 +17,7 @@ require_once '../app/views/header.php';
 		</tr>
 		<tr>
 			<td>Total # speeldagen</td>
-			<td><input type="text" name="playday_total" /></td>
+			<td><input type="text" name="matchday_total" /></td>
 		</tr>
 		<tr>
 			<td>Competitie verband</td>

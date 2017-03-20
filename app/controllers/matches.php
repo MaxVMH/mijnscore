@@ -20,7 +20,7 @@ class matches extends Controller
 		$this->view_data['leagues_current'] = $this->league->get_leagues_by_status($this->db_con, 1);
 	}
 
-	public function index($league_id='1', $playday='')
+	public function index($league_id='1', $matchday='')
 	{
 		if($this->user_loggedin == false)
 		{
@@ -29,16 +29,16 @@ class matches extends Controller
 		}
 		elseif($league = $this->league->get_league_by_id($this->db_con, $league_id))
 		{
-			if(empty($playday))
+			if(empty($matchday))
 			{
-				$playday = $league['league_playday_current'];
+				$matchday = $league['league_matchday_current'];
 			}
-			if($playday==0)
+			if($matchday==0)
 			{
-				$playday++;
+				$matchday++;
 			}
 
-			if($matches = $this->match->get_matches_by_league_id_and_playday($this->db_con, $league_id, $playday))
+			if($matches = $this->match->get_matches_by_league_id_and_matchday($this->db_con, $league_id, $matchday))
 			{
 				$this->view_data['league'] = $league;
 				$this->view_data['matches'] = $matches;

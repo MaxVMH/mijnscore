@@ -4,22 +4,22 @@ require_once '../app/views/header.php';
 
 <?php
 
-$match_league_playday_previous = $data['matches']['0']['league_playday'] - 1;
-$match_league_playday_next = $data['matches']['0']['league_playday'] + 1;
+$match_league_matchday_previous = $data['matches']['0']['league_matchday'] - 1;
+$match_league_matchday_next = $data['matches']['0']['league_matchday'] + 1;
 
-if($data['matches']['0']['league_playday'] == "1")
+if($data['matches']['0']['league_matchday'] == "1")
 {
-	$match_league_playday_previous = $data['matches']['0']['league_playday'];
+	$match_league_matchday_previous = $data['matches']['0']['league_matchday'];
 }
 
-if($data['matches']['0']['league_playday'] > $data['league']['league_playday_current'] + 2)
+if($data['matches']['0']['league_matchday'] > $data['league']['league_matchday_current'] + 2)
 {
-	$match_league_playday_next = $data['matches']['0']['league_playday'];
+	$match_league_matchday_next = $data['matches']['0']['league_matchday'];
 }
 
-if($data['matches']['0']['league_playday'] >= $data['league']['league_playday_total'])
+if($data['matches']['0']['league_matchday'] >= $data['league']['league_matchday_total'])
 {
-	$match_league_playday_next = $data['matches']['0']['league_playday'];
+	$match_league_matchday_next = $data['matches']['0']['league_matchday'];
 }
 
 ?>
@@ -28,9 +28,9 @@ if($data['matches']['0']['league_playday'] >= $data['league']['league_playday_to
 <table>
 	<tr>
 		<th colspan="6">
-			<div style="float: left; text-align: left"><a href="matches/index/<?= $data['league']['league_id']; ?>/<?= $match_league_playday_previous; ?>" class="align-left">(vorige speeldag)</a></div>
-			Speeldag <?= $data['matches']['0']['league_playday']; ?>
-			<div style="float: right; text-align: right"><a href="matches/index/<?= $data['league']['league_id']; ?>/<?= $match_league_playday_next; ?>">(volgende speeldag)</a></div>
+			<div style="float: left; text-align: left"><a href="matches/index/<?= $data['league']['league_id']; ?>/<?= $match_league_matchday_previous; ?>" class="align-left">(vorige speeldag)</a></div>
+			Speeldag <?= $data['matches']['0']['league_matchday']; ?>
+			<div style="float: right; text-align: right"><a href="matches/index/<?= $data['league']['league_id']; ?>/<?= $match_league_matchday_next; ?>">(volgende speeldag)</a></div>
 		</th>
 	</tr>
 
@@ -43,7 +43,7 @@ if($data['matches']['0']['league_playday'] >= $data['league']['league_playday_to
 	</tr>
 
 	<?php
-	$playday_prediction_score_counter = "0";
+	$matchday_prediction_score_counter = "0";
 
 	foreach($data['matches'] as $match)
 	{

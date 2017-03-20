@@ -33,12 +33,12 @@ require_once '../app/views/header.php';
 		<tr>
 			<td>Speeldag</td>
 			<td>
-				<select name="playday">
+				<select name="matchday">
 					
 					<?php
 					foreach(range(1,30) as $i)
 					{
-						if($data['match']['league_playday'] == $i)
+						if($data['match']['league_matchday'] == $i)
 						{
 							echo "<option value=\"" . $i . "\" selected=\"selected\">Speeldag " .$i . "</option>";
 						}

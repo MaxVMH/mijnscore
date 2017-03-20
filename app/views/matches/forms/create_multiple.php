@@ -3,11 +3,11 @@ require_once '../app/views/header.php';
 ?>
 
 <h3>Voeg nieuwe wedstrijden toe</h3>
-<form action="matches_admin/create_multiple/<?= $data['league']['league_id']; ?>/<?= $data['playday']; ?>" method="post">
+<form action="matches_admin/create_multiple/<?= $data['league']['league_id']; ?>/<?= $data['matchday']; ?>" method="post">
 	<table>
 		<tr>
 				<th colspan="3">
-					Speeldag <?= $data['playday']; ?> van <?= $data['league']['league_name']; ?>
+					Speeldag <?= $data['matchday']; ?> van <?= $data['league']['league_name']; ?>
 				</th>
 		</tr>
 		<tr>

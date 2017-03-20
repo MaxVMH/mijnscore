@@ -1,22 +1,22 @@
 <?php
 require_once '../app/views/header.php';
 
-$match_league_playday_previous = $data['predictions']['0']['league_playday'] - 1;
-$match_league_playday_next = $data['predictions']['0']['league_playday'] + 1;
+$match_league_matchday_previous = $data['predictions']['0']['league_matchday'] - 1;
+$match_league_matchday_next = $data['predictions']['0']['league_matchday'] + 1;
 
-if($data['predictions']['0']['league_playday'] == "1")
+if($data['predictions']['0']['league_matchday'] == "1")
 {
-	$match_league_playday_previous = $data['predictions']['0']['league_playday'];
+	$match_league_matchday_previous = $data['predictions']['0']['league_matchday'];
 }
 
-if($data['predictions']['0']['league_playday'] > $data['league']['league_playday_current'] + 2)
+if($data['predictions']['0']['league_matchday'] > $data['league']['league_matchday_current'] + 2)
 {
-	$match_league_playday_next = $data['predictions']['0']['league_playday'];
+	$match_league_matchday_next = $data['predictions']['0']['league_matchday'];
 }
 
-if($data['predictions']['0']['league_playday'] >= $data['league']['league_playday_total'])
+if($data['predictions']['0']['league_matchday'] >= $data['league']['league_matchday_total'])
 {
-	$match_league_playday_next = $data['predictions']['0']['league_playday'];
+	$match_league_matchday_next = $data['predictions']['0']['league_matchday'];
 }
 
 if(isset($data['user']))
@@ -37,9 +37,9 @@ else
 <table>
 	<tr>
 		<th colspan="6">
-			<div style="float: left; text-align: left"><a href="predictions/index/<?= $data['league']['league_id']; ?>/<?= $match_league_playday_previous; ?>/<?= $user_id; ?>" class="align-left">(vorige speeldag)</a></div>
-			Speeldag <?= $data['predictions']['0']['league_playday']; ?>
-			<div style="float: right; text-align: right"><a href="predictions/index/<?= $data['league']['league_id']; ?>/<?= $match_league_playday_next; ?>/<?= $user_id; ?>">(volgende speeldag)</a></div>
+			<div style="float: left; text-align: left"><a href="predictions/index/<?= $data['league']['league_id']; ?>/<?= $match_league_matchday_previous; ?>/<?= $user_id; ?>" class="align-left">(vorige speeldag)</a></div>
+			Speeldag <?= $data['predictions']['0']['league_matchday']; ?>
+			<div style="float: right; text-align: right"><a href="predictions/index/<?= $data['league']['league_id']; ?>/<?= $match_league_matchday_next; ?>/<?= $user_id; ?>">(volgende speeldag)</a></div>
 		</th>
 	</tr>
 
@@ -53,7 +53,7 @@ else
 	</tr>
 
 	<?php
-	$playday_prediction_score_counter = "0";
+	$matchday_prediction_score_counter = "0";
 
 	foreach($data['predictions'] as $match)
 	{
@@ -89,7 +89,7 @@ else
 			if($match['match_status'] <= 4 && $match['prediction_id'] != null)
 			{
 				$prediction_points = $this->prediction_points->get_prediction_points_by_scores($match['home_team_score'], $match['away_team_score'], $match['prediction_home_team_score'], $match['prediction_away_team_score']);
-				$playday_prediction_score_counter = $playday_prediction_score_counter + $prediction_points;
+				$matchday_prediction_score_counter = $matchday_prediction_score_counter + $prediction_points;
 			}
 			?>
 
@@ -102,7 +102,7 @@ else
 
 	<tr>
 		<td colspan="5" class="align-right">Totaal speeldag</td>
-		<th><?= $playday_prediction_score_counter; ?></th>
+		<th><?= $matchday_prediction_score_counter; ?></th>
 	</tr>
 </table>
 

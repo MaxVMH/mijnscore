@@ -1,34 +1,34 @@
 <?php
 require_once '../app/views/header.php';
 
-$match_league_playday_previous = $data['matches']['0']['league_playday'] - 1;
-$match_league_playday_next = $data['matches']['0']['league_playday'] + 1;
+$match_league_matchday_previous = $data['matches']['0']['league_matchday'] - 1;
+$match_league_matchday_next = $data['matches']['0']['league_matchday'] + 1;
 
-if($data['matches']['0']['league_playday'] == "1")
+if($data['matches']['0']['league_matchday'] == "1")
 {
-	$match_league_playday_previous = $data['matches']['0']['league_playday'];
+	$match_league_matchday_previous = $data['matches']['0']['league_matchday'];
 }
 
-if($data['matches']['0']['league_playday'] > $data['league']['league_playday_current'] + 2)
+if($data['matches']['0']['league_matchday'] > $data['league']['league_matchday_current'] + 2)
 {
-	$match_league_playday_next = $data['matches']['0']['league_playday'];
+	$match_league_matchday_next = $data['matches']['0']['league_matchday'];
 }
 
-if($data['matches']['0']['league_playday'] >= $data['league']['league_playday_total'])
+if($data['matches']['0']['league_matchday'] >= $data['league']['league_matchday_total'])
 {
-	$match_league_playday_next = $data['matches']['0']['league_playday'];
+	$match_league_matchday_next = $data['matches']['0']['league_matchday'];
 }
 ?>
 
 <h3>Bewerk wedstrijden van <?= $data['league']['league_name']; ?></h3>
 
-<form action="matches_admin/edit_multiple/<?= $data['league']['league_id']; ?>/<?= $data['matches']['0']['league_playday']; ?>" method="post">
+<form action="matches_admin/edit_multiple/<?= $data['league']['league_id']; ?>/<?= $data['matches']['0']['league_matchday']; ?>" method="post">
 	<table>
 		<tr>
 			<th colspan="7">
-				<div style="float: left; text-align: left"><a href="matches_admin/edit_multiple/<?= $data['league']['league_id']; ?>/<?= $match_league_playday_previous; ?>" class="align-left">(vorige speeldag)</a></div>
-				Speeldag <?= $data['matches']['0']['league_playday']; ?>
-				<div style="float: right; text-align: right"><a href="matches_admin/edit_multiple/<?= $data['league']['league_id']; ?>/<?= $match_league_playday_next; ?>">(volgende speeldag)</a></div>
+				<div style="float: left; text-align: left"><a href="matches_admin/edit_multiple/<?= $data['league']['league_id']; ?>/<?= $match_league_matchday_previous; ?>" class="align-left">(vorige speeldag)</a></div>
+				Speeldag <?= $data['matches']['0']['league_matchday']; ?>
+				<div style="float: right; text-align: right"><a href="matches_admin/edit_multiple/<?= $data['league']['league_id']; ?>/<?= $match_league_matchday_next; ?>">(volgende speeldag)</a></div>
 			</th>
 		</tr>
 		<tr>

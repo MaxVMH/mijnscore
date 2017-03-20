@@ -17,10 +17,10 @@ require_once '../app/views/header.php';
 		</tr>
 		<tr>
 			<td class="align-right">Huidige speeldag</td>
-			<td class="align-left"><select name="playday_current"><?php
-			foreach(range(0,$data['league']['league_playday_total']) as $i)
+			<td class="align-left"><select name="matchday_current"><?php
+			foreach(range(0,$data['league']['league_matchday_total']) as $i)
 			{
-				if($i == $data['league']['league_playday_current'])
+				if($i == $data['league']['league_matchday_current'])
 				{
 					echo "<option value=\"" . $i . "\" selected=\"selected\">speeldag " .$i . " (huidig)</option>";
 				}
@@ -33,7 +33,7 @@ require_once '../app/views/header.php';
 		</tr>
 		<tr>
 			<td class="align-right">Totaal # speeldagen</td>
-			<td class="align-left"><input type="text" name="playday_total" size="10" value="<?= $data['league']['league_playday_total']; ?>" /></td>
+			<td class="align-left"><input type="text" name="matchday_total" size="10" value="<?= $data['league']['league_matchday_total']; ?>" /></td>
 		</tr>
 		<tr>
 			<td class="align-right">Status</td>
