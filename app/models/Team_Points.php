@@ -17,7 +17,7 @@ class Team_Points
 		WHERE
 		league_id=:league_id
 		ORDER BY
-		points_amount DESC, matches_won DESC, (goals_scored - goals_allowed), goals_scored DESC
+		points_amount DESC, matches_won DESC, (goals_scored - goals_allowed) DESC, goals_scored DESC
 		');
 
 		$query->bindValue(':league_id', $league_id, PDO::PARAM_STR);
