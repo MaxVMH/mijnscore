@@ -71,12 +71,20 @@ class register extends Controller
 			// Get the registration datetime of the last registered user to limit new registrations so it can only happen every 5 minutes
 			$last_registered_user = $this->user->get_last_user_by_user_registration_datetime($this->db_con);
 
-			$last_registered_user_datetime = new DateTime($last_registered_user['user_registration_datetime']);
+			if(!empty($last_registered_user))
+			{
+				$last_registered_user_datetime = new DateTime($last_registered_user['user_registration_datetime']);
+			}
+			else
+			{
+				$last_registered_user_datetime = new DateTime('-10 MINUTE');
+			}
+
 			$last_registered_user_expiration_datetime = new DateTime('-5 MINUTE');
 
 			$registered_users_amount = $this->user->count_users($this->db_con);
 
-			if($last_registered_user_datetime >= $last_registered_user_expiration_datetime && !empty($last_registered_user))
+			if($last_registered_user_datetime >= $last_registered_user_expiration_datetime)
 			{
 				$this->view_data['notice'] = "Ons registratiesysteem is tijdelijk afgesloten om grote hoeveelheden nieuwe gebruikers tegen te gaan. Probeer opnieuw binnen enkele minuten.";
 				$this->view('register/form', $this->view_data);
