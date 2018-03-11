@@ -9,11 +9,11 @@ require_once '../app/views/header.php';
 		</tr>
 		<tr class="align-left">
 			<td>Ploeg naam</td>
-			<td><input type="text" name="name" value="<?= $data['team']['team_name']; ?>" size="40" /></td>
+			<td><input type="text" name="name" value="<?= $data['team']['team_name']; ?>" /></td>
 		</tr>
 		<tr class="align-left">
 			<td>Ploeg tag</td>
-			<td><input type="text" name="tag" value="<?= $data['team']['team_tag']; ?>" size="10" /></td>
+			<td><input type="text" name="tag" value="<?= $data['team']['team_tag']; ?>" /></td>
 		</tr>
 		<tr class="align-left">
 			<td>Competities</td>
