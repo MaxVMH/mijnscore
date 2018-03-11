@@ -36,7 +36,7 @@ require_once '../app/views/header.php';
 			{
 				?>
 
-				<td><a href="teams_admin/edit/<?= $data['team']['team_id']; ?>">Bewerk ploeg</a></td>
+				<td><a href="teams_admin/edit/<?= $team['team_id']; ?>">Bewerk ploeg</a></td>
 
 				<?php
 			}
