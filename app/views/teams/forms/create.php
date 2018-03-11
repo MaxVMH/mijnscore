@@ -7,11 +7,11 @@ require_once '../app/views/header.php';
 		<tr>
 			<th colspan="2">Nieuwe ploeg</th>
 		</tr>
-		<tr>
+		<tr class="align-left">
 			<td>Ploeg naam</td>
 			<td><input type="text" name="name" /></td>
 		</tr>
-		<tr>
+		<tr class="align-left">
 			<td>Ploeg tag</td>
 			<td><input type="text" name="tag" /></td>
 		</tr>
