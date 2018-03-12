@@ -7,22 +7,23 @@ Eerst en vooral: mijnscore.be is een webdevelopment oefening en daarom geen echt
 Omdat mijnscore.be nog volop in ontwikkeling is, kan het zijn dat er hier en daar iets niet werkt.<br />
 <br />
 <h3>Wat is mijnscore.be?</h3>
-Op mijnscore.be kan je je pronostiek invullen voor wedstrijden van het Belgische eersteklassevoetbal. Je krijgt punten door juiste pronostieken in te vullen.
-Hoe meer punten je verzamelt, hoe hoger je eindigt in het eindklassement.<br />
+Op mijnscore.be kan je je pronostiek invullen voor wedstrijden van het Belgische eersteklassevoetbal (en andere interessante wedstrijden/toernooien). <br />
+<br />
+Je krijgt punten door juiste pronostieken in te vullen. Hoe meer punten je verzamelt, hoe hoger je eindigt in het klassement. Er is een klassement per speeldag en een eindklassement per competitie/toernooi.<br />
 <br />
 <h3>Hoe kan ik een fout melden of verbetering voorstellen?</h3>
-Door een <a href="https://github.com/MaxVMH/mijnscore/">issue te openen op github</a>, een <a href="messages_create/form/0/1">berichtje te sturen in het spel</a> of een berichtje achter te laten in <a href="http://www.9lives.be/forum/webdesign-webdevelopment/1050659-voetbalpronostiek.html">deze thread</a> of in de prono- en nabesprekingthreads op 9lives.<br />
+Door een <a href="https://github.com/MaxVMH/mijnscore/">issue te openen op github</a> of een berichtje achter te laten in <a href="http://www.9lives.be/forum/webdesign-webdevelopment/1050659-voetbalpronostiek.html">deze thread</a> of in <a href="https://www.9lives.be/forum/voetbal/1088017-prono-en-nabesprekingsthread-2017-2018-a.html">de prono- en nabesprekingthread</a> op 9lives.<br />
 <br />
 
 <hr />
 
 <h3>Hoe vul ik mijn pronostiek in?</h3>
-<a href="login/form">Log in</a> (maak <a href="register/form">een nieuw account</a> mocht je dat nog niet hebben) en klik op "<a href="predictions/index">Pronostiek</a>" in het menu.<br />
+Maak <a href="register/form">een nieuw account</a> (mocht je dat nog niet hebben), <a href="login/form">log in</a>, ga naar pronostiek in het menu en selecteer de gewenste competitie.<br />
 <br />
 <h3>Tot wanneer kan ik mijn pronostiek invullen?</h3>
-Tot wanneer de wedstrijd aanvangt (het aangegeven tijdstip naast de wedstrijd).
+Tot wanneer de wedstrijd aanvangt (zie het aangegeven tijdstip naast de wedstrijd).
 Vul je pronostiek op tijd in om teleurstellingen te voorkomen.<br />
-Het huidige tijdstip volgens onze server kan je zien op je profielpagina (naast "Laatst online").<br />
+Het huidige tijdstip volgens onze server kan je zien op je profielpagina (naast "laatst online").<br />
 <br />
 <h3>Kan ik mijn pronostiek wijzigen?</h3>
 Ja, tot wanneer de wedstrijd aanvangt (het aangegeven tijdstip naast de wedstrijd).<br />
@@ -37,10 +38,10 @@ Ja, tot wanneer de wedstrijd aanvangt (het aangegeven tijdstip naast de wedstrij
 	<li>6 punten voor een pronostiek met juiste uitslag: 4-0, 0-4, 4-1 of 1-4</li>
 	<li>7 punten voor een pronostiek met juiste uitslag die hierboven niet vermeld staat.</li>
 </ul>
-De kolom "Punten" naast je pronostiek geeft het aantal punten weer van zodra we de wedstrijdresultaten binnen hebben.<br />
+De kolom "punten" naast je pronostiek geeft het aantal punten weer van zodra we de wedstrijdresultaten binnen hebben.<br />
 <br />
 <h3>Kan ik een andere gebruiker zijn pronostiek bekijken?</h3>
-Ja. Via de gebruiker zijn/haar profiel (je kan de <a href="users/search">gebruikersnaam opzoeken</a>), of door in <a href="predictions/score">het scorebord</a> op de gebruiker zijn/haar score te klikken.<br />
+Ja. Via de gebruiker zijn/haar profiel (je kan de <a href="users/search">gebruikersnaam opzoeken</a>), of door in <a href="predictions/score">het scorebord</a> op de gebruiker op zijn/haar score te klikken.<br />
 <br />
 
 <hr />
@@ -56,9 +57,8 @@ Om het testen van mijnscore in goede banen te leiden, komen de volgende accounts
 	<li>Accounts die 90 opeenvolgende dagen niet inloggen.</li>
 	<li>Accounts waarvan de gebruiker niet deelneemt aan de 9lives voetbalpronostiek.</li>
 </ul>
-Werd je account verwijderd en denk je dat het om een vergissing gaat, neem dan contact op (zie "Hoe kan ik een fout melden of verbetering voorstellen?").<br />
+Werd je account verwijderd en denk je dat het om een vergissing gaat, neem dan contact op via <a href="http://www.9lives.be/forum/webdesign-webdevelopment/1050659-voetbalpronostiek.html">deze thread</a> of in <a href="https://www.9lives.be/forum/voetbal/1088017-prono-en-nabesprekingsthread-2017-2018-a.html">de prono- en nabesprekingthread</a> op 9lives.<br />
 <br />
-
 
 <?php
 require_once '../app/views/footer.php';
