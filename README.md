@@ -2,36 +2,38 @@
 
 An unfinished soccer prediction web app written in PHP & HTML.
 
+# Requirements
+
+* Apache with mod_rewrite enabled and support for .htaccess
+
 # Installation instructions
 
 * Unzip and move the files to an appropriate folder
 
-* Apache needs the mijnscore /public_html/ folder set as document root folder
+* Set the mijnscore /public_html/ folder set as document root in Apache
 
-* Apache needs mod_rewrite enabled
+* Edit /app/init.php (enter your database information and ip / url)
 
-* Edit /app/init.php, enter your database information and ip / url
+* Open install.php in your browser (eg. www.example.com/install.php)
 
-* Move install.php from /dev/ to /public_html/
+* Open the website in your browser (eg. www.example.com) and register an account
 
-* Open install.php in your browser (examples: www.example.com/install.php or http://localhost/install.php)
+* Remove install.php
 
-* Open the website in your browser (examples: www.example.com or http://localhost), register an account and log in
-
-* Move install.php from /public_html/ back to /dev/
-
-* Remove /dev/ and all of its content
-
-* Access your database with something like phpmyadmin, go to the users table, and edit the user_rank field to '9' (instead of '1') for your account (that gives you admin rights)
+* Access your database (with something like phpmyadmin), go to the users table and edit the user_rank field to '9' for your account (that gives you admin rights)
 
 # Getting started
 
-* Open the website in your browser, log in with the admin account if you aren't already, create a new league, create teams and create the first few matches.
+* Open the website in your browser, log in with the admin account and create a new league.
 
 * Leagues have an option to be hidden for users, enabled by default. Make sure to edit the league and set it to active.
 
+* Add your first matches.
+
+* When a match has finished, enter the score (make sure to check the score checkbox) and let mijnscore calculate the user points and rankings from the administrator menu. You can also let mijnscore calculate the teams points and rankings if necessary.
+
+# For your information
+
 * Every time the predictions page gets loaded, it automatically checks if a match has begun or not. To confirm your server time, simply go to your profile page and look at the last activity date/time (refresh if necessary).
 
-* When a match has finished, enter the score and let mijnscore calculate the user points and rankings from the administrator menu. You can also calculate the teams points and rankings.
-
-* Relationships between leagues is modeled after the Belgian play-offs system. Example: League A is for the regular season. League B is for the play-offs and has a relationship with League A. The season overall user ranking in League B includes half of the points of League A.
+* If you want to use a play-offs system that includes half of the users points of the regular season: create a new league for the play-offs and set 'relationship' to the regular season league.
