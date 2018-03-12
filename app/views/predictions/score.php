@@ -109,7 +109,7 @@ foreach($data['users'] as $user)
 			?>
 		</td>
 		<td><a href="users/profile/<?= $user['user_id']; ?>"><?= $user['user_username']; ?></a></td>
-		<td><a href="predictions/index/<?= $data['score_league']['league_id']; ?>/<?= $data['score_matchday']; ?>/<?= $user['user_id']; ?>"><?= $user['points_amount']; ?></a></td>
+		<td><a href="predictions/index/<?= $data['score_league']['league_id']; ?>/<?= $data['score_matchday']; ?>/<?= $user['user_id']; ?>"><?= (float) $user['points_amount']; ?></a></td>
 	</tr>
 	<?php
 }

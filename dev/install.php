@@ -117,7 +117,7 @@ $query_predictions_points="CREATE TABLE `predictions_points` (
 	`league_id` INT(3) NOT NULL DEFAULT 0,
 	`league_matchday` INT(3) NOT NULL DEFAULT 0,
 	`league_user_ranking` INT(8) NOT NULL DEFAULT 0,
-	`points_amount` INT(5) NOT NULL DEFAULT 0,
+	`points_amount` DECIMAL(10,1) NOT NULL DEFAULT 0,
 
 	PRIMARY KEY (`points_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
