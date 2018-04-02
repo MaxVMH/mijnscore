@@ -86,7 +86,7 @@ class Mail
 				$query->bindValue(':league_id', $active_league['league_id'], PDO::PARAM_STR);
 				$query->execute();
 
-				$query = $db_con->prepare('SELECT * FROM users WHERE user_email_notification=1');
+				$query = $db_con->prepare('SELECT * FROM users WHERE user_email_notification=1 AND user_email_verification=1 AND user_active=1');
 				$query->execute();
 				$users_email_notifications = $query->fetchAll();
 				foreach($users_email_notifications as $user_email_notification)
