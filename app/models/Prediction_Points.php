@@ -162,14 +162,14 @@ class Prediction_Points
 		{
 			foreach($matches as $match)
 			{
-				// select the predictions for each match
+				// Select the predictions users made for this match.
 				$query = $db_con->prepare('SELECT * FROM predictions WHERE match_id=:match_id ORDER BY user_id');
 				$query->bindValue(':match_id', $match['match_id'], PDO::PARAM_STR);
 				$query->execute();
 				$predictions = $query->fetchAll();
 
-				// calculate the points per matchday and collect it in array $predictions_points
-				// matchday 0 is the league total
+				// Calculate the points for the match and collect the points in array $predictions_points.
+				// Matchday 0 is the league total.
 				foreach($predictions as $prediction)
 				{
 					if(empty($predictions_points[$prediction['user_id']][0]))
@@ -185,14 +185,16 @@ class Prediction_Points
 				}
 			}
 
-			// put the points in the database
+			// Put the points in the database.
+			// We select all points based on user_id.
 			foreach($predictions_points as $user_id => $points_matchdays)
 			{
+				// Then we split points based on matchday.
 				foreach($points_matchdays as $league_matchday => $points_amount)
 				{
 					$parent_league_points_amount = 0;
 
-					if(!empty($parent_league))
+					if(!empty($parent_league) && $league_matchday == 0)
 					{
 						$query = $db_con->prepare('SELECT * FROM predictions_points WHERE user_id=:user_id AND league_id=:league_id AND league_matchday=0');
 						$query->bindValue(':user_id', $user_id, PDO::PARAM_STR);
@@ -209,10 +211,15 @@ class Prediction_Points
 					$query->bindValue(':league_matchday', $league_matchday, PDO::PARAM_STR);
 					$query->execute();
 
+					// Check if there are already points in the database.
+					// If there are already points in the database, we check if the points correct and if necessary, update them.
+					// If there are not already points in the database, we create a new record.
 					if($points = $query->fetch())
 					{
+						// There are already points in the database so we check if the points are correct and if necessary, update them.
 						if($points['points_amount'] != $points_corrected_amount)
 						{
+							// The points in the database are not correct so we update them.
 							$query = $db_con->prepare('UPDATE predictions_points SET points_amount=:points_amount WHERE points_id=:points_id');
 							$query->bindValue(':points_id', $points['points_id'], PDO::PARAM_STR);
 							$query->bindValue(':points_amount', $points_corrected_amount, PDO::PARAM_STR);
@@ -221,6 +228,7 @@ class Prediction_Points
 					}
 					else
 					{
+						// There are not already points in the database so we create a new record.
 						$query = $db_con->prepare('INSERT INTO predictions_points(league_id, league_matchday, user_id, points_amount) VALUES(:league_id, :league_matchday, :user_id, :points_amount)');
 						$query->bindValue(':league_id', $league_id, PDO::PARAM_STR);
 						$query->bindValue(':league_matchday', $league_matchday, PDO::PARAM_STR);
