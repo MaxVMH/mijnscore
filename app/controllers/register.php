@@ -43,7 +43,7 @@ class register extends Controller
 		}
 		elseif($this->validate_input("username", $_POST['username']) != true)
 		{
-			$this->view_data['notice'] = "Vul een geldige gebruikersnaam in (minstens 2 letters).";
+			$this->view_data['notice'] = "Vul een geldige gebruikersnaam in (minstens 2, maximum 64 letters, enkel letters, geen speciale tekens of spaties).";
 			$this->view('register/form', $this->view_data);
 		}
 		elseif($this->validate_input("password", $_POST['password']) != true)
