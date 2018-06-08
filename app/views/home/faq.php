@@ -60,6 +60,23 @@ Om het testen van mijnscore in goede banen te leiden, komen de volgende accounts
 Werd je account verwijderd en denk je dat het om een vergissing gaat, neem dan contact op via <a href="http://www.9lives.be/forum/webdesign-webdevelopment/1050659-voetbalpronostiek.html">deze thread</a> of in <a href="https://www.9lives.be/forum/voetbal/1088017-prono-en-nabesprekingsthread-2017-2018-a.html">de prono- en nabesprekingthread</a> op 9lives.<br />
 <br />
 
+<hr />
+
+<h3>Welke data houdt mijnscore bij?</h3>
+Van bezoekers die niet ingelogd zijn, wordt er geen data bijgehouden en worden er geen cookies geplaatst. <br />
+<br />
+Van bezoekers die zich registreren/inloggen wordt de volgende data bijgehouden:
+<ul>
+	<li>Gebruikersnaam en hash van het wachtwoord (om u te kunnen inloggen).</li>
+	<li>Er wordt een cookie op uw computer geplaatst met een ID en token (om u te herkennen en ingelogd te houden voor een beperkte tijd).</li>
+	<li>E-mail adres (om, indien u daarvoor kiest in uw accountinstellingen, e-mail herinneringen te kunnen sturen).</li>
+	<li>Het tijdstip waarop u het laatst inlogde (om inactieve accounts te kunnen verwijderen).</li>
+	<li>IP-adres van de verbinding waarmee u registreert (om misbruik tegen te gaan).</li>
+	<li>Het tijdstip waarop iemand een fout wachtwoord voor uw account ingeeft, en het aantal keren dat dit voorvalt (om misbruik tegen te gaan).</li>
+</ul>
+Indien u uw gegevens wilt laten aanpassen of laten verwijderen, stuur dan een berichtje naar Destel op 9lives of mijnscore. <br />
+<h4>U zal geen e-mails ontvangen van mijnscore.be, tenzij u daarvoor kiest in Account -> Bewerk e-mailadres.</h4>
+
 <?php
 require_once '../app/views/footer.php';
 ?>
