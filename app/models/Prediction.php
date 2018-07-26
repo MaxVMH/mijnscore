@@ -163,7 +163,7 @@ class Prediction
 		matches.match_id = predictions.match_id
 
 		WHERE predictions.prediction_id=:prediction_id AND match_id=:match_id
-		ORDER BY match_datetime ASC');
+		ORDER BY match_datetime, match_id');
 		$query->bindValue(':prediction_id', $prediction_id, PDO::PARAM_STR);
 		$query->bindValue(':match_id', $prediction_id, PDO::PARAM_STR);
 		$query->execute();
@@ -212,7 +212,7 @@ class Prediction
 		matches.match_id = predictions.match_id
 
 		WHERE predictions.user_id=:user_id
-		ORDER BY match_datetime ASC');
+		ORDER BY match_datetime, match_id');
 		$query->bindValue(':user_id', $user_id, PDO::PARAM_STR);
 		$query->execute();
 		return $query->fetchAll();
@@ -251,7 +251,7 @@ class Prediction
 		matches.match_id = predictions.match_id
 
 		WHERE matches.league_id=:league_id AND matches.league_matchday=:matchday AND predictions.user_id=:user_id
-		ORDER BY match_datetime ASC
+		ORDER BY match_datetime, match_id
 		');
 		$query->bindValue('league_id', $league_id, PDO::PARAM_STR);
 		$query->bindValue('user_id', $user_id, PDO::PARAM_STR);
@@ -341,7 +341,7 @@ class Prediction
 		ON
 		matches.match_id = predictions.match_id AND predictions.user_id = :user_id
 
-		ORDER BY match_datetime ASC
+		ORDER BY match_datetime, match_id
 		');
 		$query->bindValue('league_id', $league_id, PDO::PARAM_STR);
 		$query->bindValue('team_id', $team_id, PDO::PARAM_STR);
@@ -388,7 +388,7 @@ class Prediction
 		ON
 		matches.match_id = predictions.match_id AND predictions.user_id = :user_id
 
-		ORDER BY match_datetime ASC
+		ORDER BY match_datetime, match_id
 		');
 		$query->bindValue('league_id', $league_id, PDO::PARAM_STR);
 		$query->bindValue('team_id', $team_id, PDO::PARAM_STR);
