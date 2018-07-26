@@ -64,7 +64,7 @@ class Mail
 	public function send_notification_emails($db_con)
 	{
 		$result = false;
-		
+
 		$query = $db_con->prepare('SELECT * FROM leagues WHERE league_status=1');
 		$query->execute();
 		$active_leagues = $query->fetchAll();
@@ -91,29 +91,8 @@ class Mail
 				$users_email_notifications = $query->fetchAll();
 				foreach($users_email_notifications as $user_email_notification)
 				{
-					$query = $db_con->prepare('
-					SELECT
-					predictions.*,
-					m.league_id as league_id,
-					m.match_datetime as match_datetime
-					FROM
-					predictions
-					INNER JOIN
-					matches m
-					ON
-					predictions.match_id = m.match_id AND league_id=:league_id
-					WHERE
-					user_id=:user_id
-					ORDER BY match_datetime DESC
-					LIMIT 1');
-					$query->bindValue('user_id', $user_email_notification['user_id'], PDO::PARAM_STR);
-					$query->bindValue('league_id', $active_league['league_id'], PDO::PARAM_STR);
-					$query->execute();
-					if($query->fetch())
-					{
-						$this->send_notification_email($user_email_notification['user_email'], $user_email_notification['user_username']);
-						$result = true;
-					}
+					$this->send_notification_email($user_email_notification['user_email'], $user_email_notification['user_username']);
+					$result = true;
 				}
 			}
 		}
