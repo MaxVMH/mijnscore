@@ -69,11 +69,29 @@ class League
 			$query->execute();
 			if($match = $query->fetch())
 			{
+				// store the match matchday
+				$newcurrentmatchday = $match['league_matchday'];
+
+				// get the datetime of the true next match
+				// this is for when matchdays need to skip faster
+				$query = $db_con->prepare('SELECT * FROM matches WHERE league_id=:league_id AND match_datetime>NOW() ORDER BY match_datetime ASC LIMIT 1');
+				$query->bindValue(':league_id', $league['league_id'], PDO::PARAM_STR);
+				$query->execute();
+				if($truenextmatch = $query->fetch())
+				{
+					$truenextmatch_datetime = strtotime($truenextmatch['match_datetime']);
+					$truenextmatch_datetime_offset = strtotime($truenextmatch['match_datetime'] . ' -1 day');
+					if($truenextmatch_datetime_offset < strtotime("now") && $truenextmatch['league_matchday'] != $match['league_matchday'])
+					{
+						$newcurrentmatchday = $truenextmatch['league_matchday'];
+					}
+				}
+
 				// compare the match matchday to the current matchday and if needed, update the current matchday
-				if($match['league_matchday'] != $league['league_matchday_current'])
+				if($newcurrentmatchday != $league['league_matchday_current'])
 				{
 					$query = $db_con->prepare('UPDATE leagues SET league_matchday_current=:league_matchday WHERE league_id=:league_id');
-					$query->bindValue(':league_matchday', $match['league_matchday'], PDO::PARAM_STR);
+					$query->bindValue(':league_matchday', $newcurrentmatchday, PDO::PARAM_STR);
 					$query->bindValue(':league_id', $league['league_id'], PDO::PARAM_STR);
 					$query->execute();
 				}
