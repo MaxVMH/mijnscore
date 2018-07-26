@@ -60,7 +60,7 @@ class predictions extends Controller
 					$this->view('home/index', $this->view_data);
 				}
 			}
-			elseif($matchday < $league['league_matchday_current'] || $league['league_status'] < 1)
+			elseif($matchday < ($league['league_matchday_current']-1) || $league['league_status'] < 1)
 			{
 				if($predictions = $this->prediction->get_matches_with_predictions_by_league_id_and_user_id_and_matchday($this->db_con, $league_id, $this->user_loggedin['user_id'], $matchday))
 				{
@@ -73,7 +73,7 @@ class predictions extends Controller
 					$this->view('home/index', $this->view_data);
 				}
 			}
-			elseif($matchday >= $league['league_matchday_current'])
+			elseif($matchday >= ($league['league_matchday_current']-1))
 			{
 				if($predictions = $this->prediction->get_predictions_by_league_id_and_user_id_and_matchday($this->db_con, $league_id, $this->user_loggedin['user_id'], $matchday))
 				{
